@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { Context } from '../store/appContext'
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 
 const EditHome = () => {
@@ -12,6 +12,33 @@ const EditHome = () => {
     const [subtitulo, setSubtitulo] = useState('')
     const [descripcion, setDescripcion] = useState('')
     const [imagen, setImagen] = useState(null)
+    const [pendingApprovalsCount, setPendingApprovalsCount] = useState(
+        sessionStorage.getItem("pendingApprovals") || 0
+    );
+
+    useEffect(() => {
+        const fetchPendingApprovals = async () => {
+            const pendingApprovals = await actions.getArticleForApproval();
+            if (pendingApprovals)
+                sessionStorage.setItem("pendingApprovals", pendingApprovals.length);
+            setPendingApprovalsCount(pendingApprovals.length);
+        };
+
+        const handlePendingApprovalsUpdate = (event) => {
+            if (event.data && event.data.type === "pendingApprovalsUpdated") {
+                const newValue = event.data.value;
+                setPendingApprovalsCount(newValue);
+            }
+        };
+
+        fetchPendingApprovals();
+
+        window.addEventListener("message", handlePendingApprovalsUpdate);
+
+        return () => {
+            window.removeEventListener("message", handlePendingApprovalsUpdate);
+        };
+    }, []);
 
     const handlePosicion = (e) => {
         setPosicion(e.target.value)
@@ -45,61 +72,95 @@ const EditHome = () => {
     return (
         <div className="container-flui">
             {/* Encabezado */}
-            <div className="container-fluid px-0 mx-0">
+            <div className="container-fluid p-0 m-0">
                 <div className="card border-0 rounded-0">
                     <div
-                        className="text-white d-flex flex-row"
-                        style={{ backgroundColor: "#000", height: "200px" }}
+                        className="text-white d-flex flex-row justify-content-center flex-column"
+                        style={{ backgroundColor: "#000", height: "170px" }}
                     >
-                        <div
-                            className="ms-4 mt-5 d-flex flex-column"
-                            style={{ width: "150px" }}
-                        ></div>
-                        <div className="ms-3" style={{ marginTop: "130px" }}></div>
-                    </div>
-                    <div
-                        className="p-4 text-black"
-                        style={{ backgroundColor: "#f8f9fa" }}
-                    >
-                        <h3 className="text-center">Panel de Administrador</h3>
-                        <div className="d-flex justify-content-end text-center py-1">
+                        <div className="text-white">
+                            <h3 className="text-center">Panel de Administrador</h3>
+                        </div>
+                        <div id="icons" style={{ marginTop: '30px' }}>
+                            <div className="d-flex align-items-center justify-content-between w-50 m-auto">
+                                <div className="nav-item me-3 me-lg-0">
+                                    <Link to="/home-edition" className="nav-link text-white d-flex align-items-center">
+                                        <i class="fa-solid fa-pencil p-2"></i>
+                                        <p style={{ fontSize: '1.1rem' }}>Editar home</p>
+                                    </Link>
+                                    <div className="d-flex justify-content-center">
+                                        <i class="fa-solid fa-caret-down" style={{ color: '#ffffff' }}></i>
+                                    </div>
+                                </div>
+                                <div className="nav-item me-3 me-lg-0">
+                                    <Link to="/admin-panel" className="nav-link text-white d-flex align-items-center">
+                                        <i className="fa-solid fa-users p-2"></i>
+                                        <p>Administrar usuarios</p>
+                                    </Link>
+                                </div>
+                                <div className="nav-item me-3 me-lg-0 justify-content-center">
+                                    <Link to="/approvals" className="nav-link text-white d-flex align-items-center">
+                                        <i className="fa-solid fa-clipboard p-2"></i>
+                                        {pendingApprovalsCount > 0 && (
+                                            <span className="badge bg-danger top-0 start-100 translate-middle"
+                                                style={{
+                                                    fontSize: '0.5rem',
+                                                    padding: '0.2rem 0.5rem',
+                                                    top: '-1rem'
+                                                }}
+                                            >
+                                                {pendingApprovalsCount}
+                                            </span>
+                                        )}
+                                        <p>Aprobaciones</p>
+                                    </Link>
+                                </div>
+                                <div className="nav-item me-3 me-lg-0">
+                                    <Link to="/admin-inbox" className="nav-link text-white d-flex align-items-center">
+                                        <i className="fa-solid fa-message p-2"></i>
+                                        <p>Bandeja de entrada</p>
+                                    </Link>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div className="card-body p-4 text-black"></div>
                 </div>
             </div>
-
-            <div id='content' style={{ padding: '20px 80px', border: '1px solid #eeeeee', width: '90%', marginLeft: 'auto', marginRight: 'auto', marginBottom: '60px' }}>
-                <h1>Editar curiosidades</h1>
-                <div style={{ marginTop: '20px' }}>
-                    <label htmlFor="posicion">Posicion del recuadro</label>
-                    <select onChange={(e) => handlePosicion(e)} value={posicion} className="form-select form-select-sm" id='posicion' aria-label="Small select example" style={{ width: '14rem' }}>
-                        <option value="">Seleccionar posicion</option>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                        <option value="5">5</option>
-                    </select>
-                </div>
-                <div className='d-flex flex-column'>
-                    <label htmlFor="titulo">Título</label>
-                    <input onChange={(e) => handleTitulo(e)} value={titulo} type="text" id='titulo' />
-                </div>
-                <div className='d-flex flex-column'>
-                    <label htmlFor="subtitulo">Subtítulo</label>
-                    <input onChange={(e) => handleSubtitulo(e)} value={subtitulo} type="text" id='subtitulo' />
-                </div>
-                <div className='d-flex flex-column'>
-                    <label htmlFor="descripcion">Descripción</label>
-                    <input onChange={(e) => handleDescripcion(e)} value={descripcion} type="text" id='descripcion' maxLength='4000' />
-                </div>
-                <div className='d-flex flex-column'>
-                    <label htmlFor="imagen">Imagen</label>
-                    <input onChange={(e) => handleImagen(e)} type="file" id='imagen' accept="image/*" />
-                </div>
-                <div style={{ marginLeft: '64.8rem', marginTop: '10px' }}>
-                    <button onClick={() => handlerNewCuriositie()} type="button" className="btn btn-dark">Confirmar</button>
+            <div className="container" style={{ margin: '30px 100px', border: '1px solid #eeeeee' }}>
+                <div className="row" style={{ margin: '30px 70px' }}>
+                    <div id='curiosities'>
+                        <h3>Editar curiosidades</h3>
+                        <div style={{ marginTop: '20px' }}>
+                            <label htmlFor="posicion">Posicion del recuadro</label>
+                            <select onChange={(e) => handlePosicion(e)} value={posicion} className="form-select form-select-sm" id='posicion' aria-label="Small select example" style={{ width: '14rem' }}>
+                                <option value="">Seleccionar posicion</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                            </select>
+                        </div>
+                        <div className='d-flex flex-column'>
+                            <label htmlFor="titulo">Título</label>
+                            <input onChange={(e) => handleTitulo(e)} value={titulo} type="text" id='titulo' />
+                        </div>
+                        <div className='d-flex flex-column'>
+                            <label htmlFor="subtitulo">Subtítulo</label>
+                            <input onChange={(e) => handleSubtitulo(e)} value={subtitulo} type="text" id='subtitulo' />
+                        </div>
+                        <div className='d-flex flex-column'>
+                            <label htmlFor="descripcion">Descripción</label>
+                            <input onChange={(e) => handleDescripcion(e)} value={descripcion} type="text" id='descripcion' maxLength='4000' />
+                        </div>
+                        <div className='d-flex flex-column'>
+                            <label htmlFor="imagen">Imagen</label>
+                            <input onChange={(e) => handleImagen(e)} type="file" id='imagen' accept="image/*" />
+                        </div>
+                        <div style={{ marginLeft: '64.8rem', marginTop: '10px' }}>
+                            <button onClick={() => handlerNewCuriositie()} type="button" className="btn btn-dark">Confirmar</button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { Context } from '../store/appContext'
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 
 export const AdminInbox = () => {
@@ -10,21 +10,36 @@ export const AdminInbox = () => {
     const [selectedItems, setSelectedItems] = useState([]);
     const userId = localStorage.getItem('userID');
     const [data, setData] = useState({ inbox: [] });
+    const [pendingApprovalsCount, setPendingApprovalsCount] = useState(
+        sessionStorage.getItem("pendingApprovals") || 0
+    );
 
-    const handleNavigateSent = () => {
-        navigate('/messages/sent')
-    }
+    useEffect(() => {
+        const fetchPendingApprovals = async () => {
+            const pendingApprovals = await actions.getArticleForApproval();
+            if (pendingApprovals)
+                sessionStorage.setItem("pendingApprovals", pendingApprovals.length);
+            setPendingApprovalsCount(pendingApprovals.length);
+        };
 
-    const handleNavigateInbox = () => {
-        navigate('/messages/');
-    };
+        const handlePendingApprovalsUpdate = (event) => {
+            if (event.data && event.data.type === "pendingApprovalsUpdated") {
+                const newValue = event.data.value;
+                setPendingApprovalsCount(newValue);
+            }
+        };
 
-    const handleNavigateTrash = () => {
-        navigate('/messages/trash')
-    }
+        fetchPendingApprovals();
 
-    const handleNavigateWriteMessage = () => {
-        navigate('/messages/compose')
+        window.addEventListener("message", handlePendingApprovalsUpdate);
+
+        return () => {
+            window.removeEventListener("message", handlePendingApprovalsUpdate);
+        };
+    }, []);
+
+    const handleNavigateArchived = () => {
+        navigate('/admin-archived-messages')
     }
 
     useEffect(() => {
@@ -64,49 +79,76 @@ export const AdminInbox = () => {
     return (
         <div className="container-flui">
             {/* Encabezado */}
-            <div className="container-fluid px-0 mx-0">
+            <div className="container-fluid p-0 m-0">
                 <div className="card border-0 rounded-0">
                     <div
-                        className="text-white d-flex flex-row"
-                        style={{ backgroundColor: "#000", height: "200px" }}
+                        className="text-white d-flex flex-row justify-content-center flex-column"
+                        style={{ backgroundColor: "#000", height: "170px" }}
                     >
-                        <div
-                            className="ms-4 mt-5 d-flex flex-column"
-                            style={{ width: "150px" }}
-                        ></div>
-                        <div className="ms-3" style={{ marginTop: "130px" }}></div>
-                    </div>
-                    <div
-                        className="p-4 text-black"
-                        style={{ backgroundColor: "#f8f9fa" }}
-                    >
-                        <h3 className="text-center">Panel de Administrador</h3>
-                        <div className="d-flex justify-content-end text-center py-1">
+                        <div className="text-white">
+                            <h3 className="text-center">Panel de Administrador</h3>
+                        </div>
+                        <div id="icons" style={{ marginTop: '30px' }}>
+                            <div className="d-flex align-items-center justify-content-between w-50 m-auto">
+                                <div className="nav-item me-3 me-lg-0">
+                                    <Link to="/home-edition" className="nav-link text-white d-flex align-items-center">
+                                        <i class="fa-solid fa-pencil p-2"></i>
+                                        <p>Editar home</p>
+                                    </Link>
+                                </div>
+                                <div className="nav-item me-3 me-lg-0">
+                                    <Link to="/admin-panel" className="nav-link text-white d-flex align-items-center">
+                                        <i className="fa-solid fa-users p-2"></i>
+                                        <p>Administrar usuarios</p>
+                                    </Link>
+                                </div>
+                                <div className="nav-item me-3 me-lg-0 justify-content-center">
+                                    <Link to="/approvals" className="nav-link text-white d-flex align-items-center">
+                                        <i className="fa-solid fa-clipboard p-2"></i>
+                                        {pendingApprovalsCount > 0 && (
+                                            <span className="badge bg-danger top-0 start-100 translate-middle"
+                                                style={{
+                                                    fontSize: '0.5rem',
+                                                    padding: '0.2rem 0.5rem',
+                                                    top: '-1rem'
+                                                }}
+                                            >
+                                                {pendingApprovalsCount}
+                                            </span>
+                                        )}
+                                        <p>Aprobaciones</p>
+                                    </Link>
+                                </div>
+                                <div className="nav-item me-3 me-lg-0">
+                                    <Link to="/admin-inbox" className="nav-link text-white d-flex align-items-center">
+                                        <i className="fa-solid fa-message p-2"></i>
+                                        <p style={{ fontSize: '1.1rem' }}>Bandeja de entrada</p>
+                                    </Link>
+                                    <div className="d-flex justify-content-center">
+                                        <i class="fa-solid fa-caret-down" style={{ color: '#ffffff' }}></i>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div className="card-body p-4 text-black"></div>
                 </div>
             </div>
 
-            <div style={{ display: 'flex', margin: '30px 100px 30px 100px', border: '1px solid #eeeeee' }}>
-                <div className="container-fluid" style={{ margin: '30px' }}>
-                    <div className="row" style={{ margin: '30px 100px' }}>
+            <div style={{ display: 'flex', margin: '30px 100px', border: '1px solid #eeeeee' }}>
+                <div className="container">
+                    <div className="row" style={{ margin: '30px 70px' }}>
                         <div className="col-md-3">
-                            <div>
-                                <button onClick={() => handleNavigateWriteMessage()} className="btn btn-dark mb-3 w-100">Escribir</button>
-                            </div>
                             <div className="mt-3">
                                 <div>
-                                    <button onClick={() => handleNavigateInbox()} style={{ width: '100%', textAlign: 'left', padding: '6px' }} type="button" className="btn btn-outline">Bandeja de entrada</button>
-                                    <button style={{ width: '100%', textAlign: 'left', padding: '6px' }} type="button" className="btn btn-outline"><strong>Enviados</strong></button>
-                                    <button onClick={() => handleNavigateTrash()} style={{ width: '100%', textAlign: 'left', padding: '6px' }} type="button" className="btn btn-outline">Papelera</button>
+                                    <button style={{ width: '100%', textAlign: 'left', padding: '6px' }} type="button" className="btn btn-outline"><strong>Bandeja de entrada</strong></button>
+                                    <button onClick={() => handleNavigateArchived()} style={{ width: '100%', textAlign: 'left', padding: '6px' }} type="button" className="btn btn-outline">Archivados</button>
                                 </div>
                             </div>
                         </div>
                         <div id="messages_center" className="col-md-9">
-                            <h1 className="mb-3">Buzón de entrada</h1>
-                            <div className="mb-3">
-                                <button onClick={() => handleDeleteMessage()} className="btn btn-light">Eliminar</button>
+                            <h3 className="mb-3">Bandeja de entrada</h3>
+                            <div className="mb-3 d-flex justify-content-end">
+                                <button onClick={() => handleDeleteMessage()} className="btn btn-outline-dark">Eliminar</button>
                             </div>
                             <div className="table-responsive">
                                 <table className="table table-hover">
@@ -132,7 +174,7 @@ export const AdminInbox = () => {
                                             ))
                                         ) : (
                                             <tr>
-                                                <td colSpan="4">No hay mensajes en la bandeja de entrada.</td>
+                                                <td colSpan="4">No hay mensajes en la bandeja de entrada</td>
                                             </tr>
                                         )}
                                     </tbody>

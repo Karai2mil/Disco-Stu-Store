@@ -19,6 +19,7 @@ import { UserSellerDataEdit } from "./pages/UserSellerDataEdit.jsx"
 import { ChangePassword } from "./pages/passChange.jsx";
 import { AdminPanel } from "./pages/AdminPanel.jsx";
 import { AdminInbox } from "./pages/AdminInbox.jsx"
+import { AdminArchivedMessages } from './pages/AdminArchivedMessages.jsx'
 import { Contact } from "./pages/Contact.jsx"
 import About from "./pages/About.jsx";
 import { UserOrders } from "./pages/UserOrders.jsx";
@@ -78,6 +79,7 @@ const Layout = () => {
                             <Route element={<PrivateRoutes />}>
                                 <Route element={<AdminPanel />} path="/admin-panel" />
                                 <Route element={<AdminInbox />} path="/admin-inbox" />
+                                <Route element={<AdminArchivedMessages />} path="/admin-archived-messages" />
                                 <Route element={<AdminApprovals />} path="/approvals" />
                                 <Route element={<ArticleReview />} path="/article-review/:id" />
                                 <Route element={<EditHome />} path="/home-edition" />

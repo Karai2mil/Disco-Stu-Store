@@ -11,6 +11,33 @@ export const AdminPanel = () => {
     const [status, setStatus] = useState("loading");
     const [isAdminLoaded, setIsAdminLoaded] = useState(false);
     const filteredUsers = users.filter(user => !user.isAdmin);
+    const [pendingApprovalsCount, setPendingApprovalsCount] = useState(
+        sessionStorage.getItem("pendingApprovals") || 0
+    );
+
+    useEffect(() => {
+        const fetchPendingApprovals = async () => {
+            const pendingApprovals = await actions.getArticleForApproval();
+            if (pendingApprovals)
+                sessionStorage.setItem("pendingApprovals", pendingApprovals.length);
+            setPendingApprovalsCount(pendingApprovals.length);
+        };
+
+        const handlePendingApprovalsUpdate = (event) => {
+            if (event.data && event.data.type === "pendingApprovalsUpdated") {
+                const newValue = event.data.value;
+                setPendingApprovalsCount(newValue);
+            }
+        };
+
+        fetchPendingApprovals();
+
+        window.addEventListener("message", handlePendingApprovalsUpdate);
+
+        return () => {
+            window.removeEventListener("message", handlePendingApprovalsUpdate);
+        };
+    }, []);
 
     useEffect(() => {
         const fetchUsers = async () => {
@@ -84,86 +111,112 @@ export const AdminPanel = () => {
     return (
         <div>
             {/* Encabezado */}
-            <div className="container-fluid px-0 mx-0">
+            <div className="container-fluid p-0 m-0">
                 <div className="card border-0 rounded-0">
                     <div
-                        className="text-white d-flex flex-row"
-                        style={{ backgroundColor: "#000", height: "200px" }}
+                        className="text-white d-flex flex-row justify-content-center flex-column"
+                        style={{ backgroundColor: "#000", height: "170px" }}
                     >
-                        <div
-                            className="ms-4 mt-5 d-flex flex-column"
-                            style={{ width: "150px" }}
-                        ></div>
-                        <div className="ms-3" style={{ marginTop: "130px" }}></div>
-                    </div>
-                    <div
-                        className="p-4 text-black"
-                        style={{ backgroundColor: "#f8f9fa" }}
-                    >
-                        <h3 className="text-center">Panel de Administrador</h3>
-                        <div className="d-flex justify-content-end text-center py-1">
+                        <div className="text-white">
+                            <h3 className="text-center">Panel de Administrador</h3>
                         </div>
-                    </div>
-                    <div className="card-body p-4 text-black"></div>
-                </div>
-            </div>
-
-            {/* Tabla y menu izquierdo */}
-            <div className="container" style={{border: '1px solid #eeeeee'}}>
-                <div style={{ display: 'flex', margin: '30px 100px 30px 100px' }}>
-                    <div className="container-fluid" style={{ margin: '30px' }}>
-                        <div className="row" style={{ margin: '30px 100px' }}>
-                            <div id="messages_center" className="">
-                                <h1 className="mb-3">Administrar usuarios</h1>
-                                <div className="mb-3">
-                                    <button onClick={() => handleDeleteSelectedUsers()} className="btn btn-light"><i className="fa-solid fa-trash"></i> Eliminar</button>
+                        <div id="icons" style={{ marginTop: '30px' }}>
+                            <div className="d-flex align-items-center justify-content-between w-50 m-auto">
+                                <div className="nav-item me-3 me-lg-0">
+                                    <Link to="/home-edition" className="nav-link text-white d-flex align-items-center">
+                                        <i class="fa-solid fa-pencil p-2"></i>
+                                        <p>Editar home</p>
+                                    </Link>
                                 </div>
-                                {status === "loading" ? (
-                                    <p>Cargando...</p>
-                                ) : status === "error" ? (
-                                    <p>Acceso no autorizado o error al obtener los usuarios.</p>
-                                ) : (
-                                    <div className="table-responsive">
-                                        {filteredUsers.length === 0 ? (
-                                            <p>No hay usuarios registrados</p>
-                                        ) : (
-                                            <table className="table table-hover">
-                                                <tr>
-                                                    <th>
-                                                        <input type="checkbox" />
-                                                    </th>
-                                                    <th>Usuario</th>
-                                                    <th>Nombre Real</th>
-                                                    <th>Correo Electrónico</th>
-                                                    <th></th>
-                                                </tr>
-                                                <tbody>
-                                                    {filteredUsers.map((user) => (
-                                                        <tr key={user.id}>
-                                                            <td style={{ width: '30px', padding: '0.5rem' }}>
-                                                                <input
-                                                                    type="checkbox"
-                                                                    onChange={(e) => toggleUserSelection(e, user.id)}
-                                                                    checked={user.isSelected}
-                                                                />
-                                                            </td>
-                                                            <td style={{ width: '25%' }}>{user.username}</td>
-                                                            <td style={{ width: '54%' }}>{user.nombre_real}</td>
-                                                            <td style={{ width: '18%' }}>{user.email}</td>
-                                                            <td style={{ width: '18%' }}>{user.country}</td>
-                                                        </tr>
-                                                    ))}
-                                                </tbody>
-                                            </table>
-                                        )}
+                                <div className="nav-item me-3 me-lg-0">
+                                    <Link to="/admin-panel" className="nav-link text-white d-flex align-items-center">
+                                        <i className="fa-solid fa-users p-2"></i>
+                                        <p style={{ fontSize: '1.1rem' }}>Administrar usuarios</p>
+                                    </Link>
+                                    <div className="d-flex justify-content-center">
+                                        <i class="fa-solid fa-caret-down" style={{ color: '#ffffff' }}></i>
                                     </div>
-                                )}
+                                </div>
+                                <div className="nav-item me-3 me-lg-0 justify-content-center">
+                                    <Link to="/approvals" className="nav-link text-white d-flex align-items-center">
+                                        <i className="fa-solid fa-clipboard p-2"></i>
+                                        {pendingApprovalsCount > 0 && (
+                                            <span className="badge bg-danger top-0 start-100 translate-middle"
+                                                style={{
+                                                    fontSize: '0.5rem',
+                                                    padding: '0.2rem 0.5rem',
+                                                    top: '-1rem'
+                                                }}
+                                            >
+                                                {pendingApprovalsCount}
+                                            </span>
+                                        )}
+                                        <p>Aprobaciones</p>
+                                    </Link>
+                                </div>
+                                <div className="nav-item me-3 me-lg-0">
+                                    <Link to="/admin-inbox" className="nav-link text-white d-flex align-items-center">
+                                        <i className="fa-solid fa-message p-2"></i>
+                                        <p>Bandeja de entrada</p>
+                                    </Link>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
 
+            {/* Tabla y menu izquierdo */}
+            <div className="container" style={{ margin: '30px 100px', border: '1px solid #eeeeee' }}>
+                <div className="row" style={{ margin: '30px 70px' }}>
+                    <div id="messages_center" className="">
+                        <h3 className="mb-3">Administrar usuarios</h3>
+                        <div className="mb-3">
+                            <button onClick={() => handleDeleteSelectedUsers()} className="btn btn-light"><i className="fa-solid fa-trash"></i> Eliminar</button>
+                        </div>
+                        {status === "loading" ? (
+                            <p>Cargando...</p>
+                        ) : status === "error" ? (
+                            <p>Acceso no autorizado o error al obtener los usuarios.</p>
+                        ) : (
+                            <div className="table-responsive">
+                                {filteredUsers.length === 0 ? (
+                                    <p>No hay usuarios registrados</p>
+                                ) : (
+                                    <table className="table table-hover">
+                                        <tr>
+                                            <th>
+                                                <input type="checkbox" />
+                                            </th>
+                                            <th>Usuario</th>
+                                            <th>Nombre Real</th>
+                                            <th>Correo Electrónico</th>
+                                            <th></th>
+                                        </tr>
+                                        <tbody>
+                                            {filteredUsers.map((user) => (
+                                                <tr key={user.id}>
+                                                    <td style={{ width: '30px', padding: '0.5rem' }}>
+                                                        <input
+                                                            type="checkbox"
+                                                            onChange={(e) => toggleUserSelection(e, user.id)}
+                                                            checked={user.isSelected}
+                                                        />
+                                                    </td>
+                                                    <td style={{ width: '25%' }}>{user.username}</td>
+                                                    <td style={{ width: '54%' }}>{user.nombre_real}</td>
+                                                    <td style={{ width: '18%' }}>{user.email}</td>
+                                                    <td style={{ width: '18%' }}>{user.country}</td>
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </table>
+                                )}
+                            </div>
+                        )}
+                    </div>
+                </div>
+            </div>
         </div>
 
     );

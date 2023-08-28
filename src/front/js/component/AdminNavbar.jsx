@@ -12,33 +12,6 @@ export const AdminNavbar = () => {
     const logged = localStorage.getItem('token');
     const Auth = localStorage.getItem('Auth');
     const { actions } = useContext(Context);
-    const [pendingApprovalsCount, setPendingApprovalsCount] = useState(
-        sessionStorage.getItem("pendingApprovals") || 0
-    );
-
-    useEffect(() => {
-        const fetchPendingApprovals = async () => {
-            const pendingApprovals = await actions.getArticleForApproval();
-            if (pendingApprovals)
-                sessionStorage.setItem("pendingApprovals", pendingApprovals.length);
-            setPendingApprovalsCount(pendingApprovals.length);
-        };
-
-        const handlePendingApprovalsUpdate = (event) => {
-            if (event.data && event.data.type === "pendingApprovalsUpdated") {
-                const newValue = event.data.value;
-                setPendingApprovalsCount(newValue);
-            }
-        };
-
-        fetchPendingApprovals();
-
-        window.addEventListener("message", handlePendingApprovalsUpdate);
-
-        return () => {
-            window.removeEventListener("message", handlePendingApprovalsUpdate);
-        };
-    }, []);
 
     const handlerNavigateToExplorer = async () => {
         await actions.search();
@@ -91,38 +64,6 @@ export const AdminNavbar = () => {
                         <ul className="navbar-nav me-auto my-2 my-lg-0">
                             <li className="nav-item dropdown mx-3">
                                 <div className="d-flex align-items-center">
-                                    <div className="nav-item me-3 me-lg-0">
-                                        <Link to="/home-edition" className="nav-link text-white">
-                                            <i class="fa-solid fa-pencil"></i>
-                                        </Link>
-                                    </div>
-                                    <div className="nav-item me-3 me-lg-0">
-                                        <Link to="/admin-panel" className="nav-link text-white">
-                                            <i className="fa-solid fa-users"></i>
-                                        </Link>
-                                    </div>
-                                    <div className="nav-item me-3 me-lg-0">
-                                        <Link to="/approvals" className="nav-link text-white">
-                                            <i className="fa-solid fa-clipboard"></i>
-                                            {pendingApprovalsCount > 0 && (
-                                                <span className="badge bg-danger top-0 start-100 translate-middle"
-                                                    style={{
-                                                        fontSize: '0.5rem',
-                                                        padding: '0.2rem 0.5rem',
-                                                        top: '-1rem'
-                                                    }}
-                                                >
-                                                    {pendingApprovalsCount}
-                                                </span>
-                                            )}
-                                        </Link>
-                                    </div>
-                                    <div className="nav-item me-3 me-lg-0">
-                                        <Link to="/admin-inbox" className="nav-link text-white">
-                                            <i className="fa-solid fa-message"></i>
-                                        </Link>
-                                    </div>
-
                                     <div
                                         className="nav-link dropdown-toggle text-white"
                                         href="#"
