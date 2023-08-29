@@ -54,7 +54,7 @@ const CartComponent = ({ data }) => {
       const usuario_id = localStorage.getItem('userID');
       const pedido_id = generateRandomOrderNumber();
       const articles_ids = data.offers.map(offer => offer.articulo_id);
-      const precio_total = data.offers.reduce((total, element) => total + element.precio, 0);
+      const subtotal = data.offers.reduce((total, element) => total + element.precio, 0);
       const condicion_funda = data.offers[0].condicion_funda;
       const condicion_soporte = data.offers[0].condicion_soporte;
       const vendedor_id = data.seller.id;
@@ -74,7 +74,7 @@ const CartComponent = ({ data }) => {
           usuario_id,
           pedido_id,
           articles_ids,
-          precio_total,
+          subtotal,
           condicion_funda,
           condicion_soporte,
           vendedor_id,
@@ -94,7 +94,7 @@ const CartComponent = ({ data }) => {
       <div className="card" >
         <div className="card-body" style={{ padding: 0 }}>
           <div id='seller_info' className="d-flex justify-content-between align-items-center">
-            <p className="mb-0">Realizar pedido de <span style={{ color: '#033BDB' }}>{data.seller.nombre}</span> <span style={{ fontSize: '0.8rem' }}>{data.seller.valoracion}% {data.seller.cantidad_de_valoraciones}</span></p>
+            <p className="mb-0">Realizar pedido de <span style={{ color: '#033BDB' }}>{data.seller.usuario}</span> <span style={{ fontSize: '0.8rem' }}>{data.seller.valoracion}%, {data.seller.cantidad_de_valoraciones} valoraciones</span></p>
             <i onClick={() => handlerDeleteAllItems()} className="fa-solid fa-trash-can" style={{ color: '#636363', cursor: 'pointer' }}></i>
           </div>
           <div className='d-flex space-between' style={{ padding: '15px' }}>

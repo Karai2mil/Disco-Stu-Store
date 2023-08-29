@@ -717,14 +717,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 						throw new Error('Error on response')
 					}
 					const data = await response.json()
-
-					if (data === 'Already exist') {
-						alert('El artículo ya existe en el carrito');
-					} else {
-						console.log('Offer added:', data);
-					}
-
-
+					return data
 				} catch (error) {
 					console.log('Error on adding cart element', error)
 				}
@@ -924,13 +917,13 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 			},
 
-			createOrder: async ({ usuario_id, articles_ids, precio_envio, precio_total, impuesto, condicion_funda, condicion_soporte, vendedor_id, pagado }) => {
+			createOrder: async ({ usuario_id, articles_ids, precio_envio, subtotal, impuesto, condicion_funda, condicion_soporte, vendedor_id, pagado }) => {
 				try {
 					const requestData = {
 						usuario_id: usuario_id,
 						articles_ids: articles_ids,
 						precio_envio: precio_envio,
-						precio_total: precio_total,
+						subtotal: subtotal,
 						impuesto: impuesto,
 						condicion_funda: condicion_funda,
 						condicion_soporte: condicion_soporte,

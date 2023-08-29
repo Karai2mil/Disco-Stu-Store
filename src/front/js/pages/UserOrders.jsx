@@ -9,8 +9,7 @@ export const UserOrders = () => {
     const { store, actions } = useContext(Context);
     const [ordersList, setOrdersList] = useState([]);
     const [refreshOrders, setRefreshOrders] = useState(false);
-    const [valoracionPositiva, setValoracionPositiva] = useState(false)
-    const [valoracionNegativa, setValoracionNegativa] = useState(false)
+    const [checkboxStates, setCheckboxStates] = useState([]);
 
     const paidOrders = ordersList.filter(order => order.pagado);
     const pendingOrders = ordersList.filter(order => !order.pagado);
@@ -22,8 +21,13 @@ export const UserOrders = () => {
             const user_id = localStorage.getItem('userID');
             const ordersData = await actions.getOrderPlaced(user_id);
             console.log("esta es la data de orders", ordersData)
-
             setOrdersList(ordersData);
+
+            const initialCheckboxStates = ordersData.map(() => ({
+                valoracionPositiva: false,
+                valoracionNegativa: false,
+            }));
+            setCheckboxStates(initialCheckboxStates);
 
             // Restablecer la actualización de pedidos
             setRefreshOrders(false);
@@ -94,15 +98,14 @@ export const UserOrders = () => {
         navigate('/messages/trash')
     }
 
-    const handleNavigateWriteMessage = () => {
-        navigate('/messages/compose')
-    }
-
-    const handleEnviarValoracion = async (vendedor_id) => {
-        if (valoracionPositiva) {
+    const handleEnviarValoracion = async (order, index) => {
+        const currentCheckboxStates = [...checkboxStates];
+        const currentCheckboxState = currentCheckboxStates[index];
+        if (currentCheckboxState.valoracionPositiva) {
             const object = {
-                'vendedor_id': vendedor_id,
-                'positivo_o_negativo': 'POSITIVO'
+                'vendedor_id': order.vendedor_id,
+                'positivo_o_negativo': 'POSITIVO',
+                'order_id': order.id,
             }
             console.log('llegamos1')
             const response = await actions.sendRating(object)
@@ -110,10 +113,11 @@ export const UserOrders = () => {
                 console.log('llegamos2')
                 window.location.reload();
             }
-        } else if (valoracionNegativa) {
+        } else if (currentCheckboxState.valoracionNegativa) {
             const object = {
-                'vendedor_id': vendedor_id,
-                'positivo_o_negativo': 'NEGATIVO'
+                'vendedor_id': order.vendedor_id,
+                'positivo_o_negativo': 'NEGATIVO',
+                'order_id': order.id,
             }
             const response = await actions.sendRating(object)
             if (response == 'COMPLETED') {
@@ -151,8 +155,8 @@ export const UserOrders = () => {
                         <div id="messages_center" className="col-md-10" style={{ marginRight: '10px', width: '80%', border: '1px solid #eeeeee' }}>
                             {sortedOrdersList.length > 0 ?
                                 (
-                                    sortedOrdersList.map(order => (
-                                        <div>
+                                    sortedOrdersList.map((order, index) => (
+                                        <div style={{margin: '10px 0px'}} key={index}>
                                             <div className="table-responsive">
                                                 <table className="table table-bordered table-hover">
                                                     <thead>
@@ -162,13 +166,12 @@ export const UserOrders = () => {
                                                             <th>Estado</th>
                                                             <th>Artículo ID</th>
                                                             <th>Artículo</th>
-                                                            <th><td>
+                                                            <th>
                                                                 {(order.haveShipping === false) ? (
                                                                     <p>Subtotal</p>
                                                                 ) : (
                                                                     <p>Total</p>
                                                                 )}
-                                                            </td>
                                                             </th>
                                                             <th>Acciones</th>
                                                         </tr>
@@ -180,7 +183,13 @@ export const UserOrders = () => {
                                                             <td>{order.pagado ? "Pagado" : "Pendiente"}</td>
                                                             <td>{order.articulos.map(articulo => articulo.id).join(', ')}</td>
                                                             <td>{order.articulos.map(articulo => articulo.titulo).join(', ')}</td>
-                                                            <td><span>${order.precio_total + order.precio_envio}</span></td>
+                                                            <td>
+                                                                {(order.haveShipping === false) ? (
+                                                                    <span>${order.subtotal}</span>
+                                                                ) : (
+                                                                    <span>${order.precio_total}</span>
+                                                                )}
+                                                            </td>
                                                             <td>
                                                                 {(order.haveShipping === false) ? (
                                                                     <p>Contacta al vendedor para establecer precio de envío</p>
@@ -203,14 +212,21 @@ export const UserOrders = () => {
                                                 </table>
                                             </div>
                                             {order.pagado &&
-                                                <div className='d-flex mt-0 align-items-center' style={{ borderLeft: '1px solid #eeeeee', borderBottom: '1px solid #eeeeee', paddingLeft: '10px' }}>
+                                            <div>
+                                                {
+                                                    !order.valorado && checkboxStates.length > 0 ? (
+                                                        <div className='d-flex mt-0 align-items-center' style={{ borderLeft: '1px solid #eeeeee', borderBottom: '1px solid #eeeeee', paddingLeft: '10px' }}>
                                                     <p><strong>Enviar valoracion al vendedor:</strong></p>
                                                     <div className='d-flex align-items-center' style={{ marginLeft: '30px' }}>
                                                         <input type="checkbox"
-                                                            checked={valoracionPositiva}
+                                                            checked={checkboxStates[index].valoracionPositiva}
                                                             onChange={() => {
-                                                                setValoracionPositiva(true);
-                                                                setValoracionNegativa(false);
+                                                                const updatedStates = [...checkboxStates];
+                                                                updatedStates[index] = {
+                                                                    valoracionPositiva: !checkboxStates[index].valoracionPositiva,
+                                                                    valoracionNegativa: false,
+                                                                };
+                                                                setCheckboxStates(updatedStates);
                                                             }}
                                                             style={{ marginRight: '5px' }}
                                                         />
@@ -220,18 +236,30 @@ export const UserOrders = () => {
                                                     <div className='d-flex align-items-center' style={{ marginLeft: '30px' }}>
                                                         <input
                                                             type="checkbox"
-                                                            checked={valoracionNegativa}
+                                                            checked={checkboxStates[index].valoracionNegativa}
                                                             onChange={() => {
-                                                                setValoracionPositiva(false);
-                                                                setValoracionNegativa(true);
+                                                                const updatedStates = [...checkboxStates];
+                                                                updatedStates[index] = {
+                                                                    'valoracionPositiva': false,
+                                                                    'valoracionNegativa': !checkboxStates[index].valoracionNegativa,
+                                                                };
+                                                                setCheckboxStates(updatedStates);
                                                             }}
                                                             style={{ marginRight: '5px' }}
                                                         />
                                                         <i className="fa-solid fa-xmark" style={{ color: '#cf0707' }}></i>
                                                         <p><strong>Negativo</strong></p>
                                                     </div>
-                                                    <button style={{ marginLeft: 'auto', marginRight: '5px' }} onClick={() => handleEnviarValoracion(order.vendedor_id)} type='button' className='btn btn-dark'>Enviar</button>
+                                                    <button style={{ marginLeft: 'auto', marginRight: '5px' }} onClick={() => handleEnviarValoracion(order, index)} type='button' className='btn btn-dark'>Enviar</button>
                                                 </div>
+                                                    ) : (
+                                                        <div>
+                                                            <p>Pedido valorado</p>
+                                                        </div>
+                                                    )
+                                                }
+                                            </div>
+                                                
                                             }
                                         </div>
                                     ))

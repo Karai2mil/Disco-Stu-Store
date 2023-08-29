@@ -15,15 +15,21 @@ const Offers = () => {
         actions.getOffers(article.id)
     }, [])
 
-    const addItemToCart = (offer) => {
+    const addItemToCart = async (offer) => {
         const user_id = localStorage.getItem('userID');
         const cart_element = {
             'user_id': user_id,
             'vendedor_id': offer.vendedor_id,
             'oferta_id': offer.id
         }
-        actions.newCartElement(cart_element)
-        navigate('/cart')
+        const fetchData = await actions.newCartElement(cart_element)
+        if (fetchData == 'Already exist') {
+            alert('El artículo ya existe en el carrito');
+            navigate('/cart')
+        } else if (fetchData == 'COMPLETED') {
+            console.log('Offer added:', fetchData);
+            navigate('/cart')
+        }
     }
 
     return (
@@ -97,8 +103,8 @@ const Offers = () => {
                                             </div>
                                         </td>
                                         <td style={{ width: '25%', paddingLeft: '10px' }}>
-                                            <p style={{ marginBottom: '5px' }}><strong>{offer.vendedor_nombre}</strong></p>
-                                            <p>{offer.valoracion}</p>
+                                            <p style={{ marginBottom: '5px' }}><strong>{offer.usuario}</strong></p>
+                                            <p>{offer.valoracion}%, {offer.cantidad_de_valoraciones} valoraciones</p>
                                             <div className={styles.properties}>
                                                 <p className={styles.articleConditions}>Enviado desde:</p>
                                                 <p>{offer.pais_vendeor}</p>

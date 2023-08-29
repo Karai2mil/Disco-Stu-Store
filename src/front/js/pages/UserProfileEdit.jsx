@@ -68,15 +68,13 @@ export const UserProfileEdit = () => {
                     </div>
                 </div>
                 <div className="p-4 text-black" style={{ backgroundColor: '#f8f9fa' }}>
-                    <div className="d-flex justify-content-end text-center py-1">
-
-                        <Link to="/user-profile" className="nav-link text-dark btn" data-mdb-ripple-color="dark" style={{ zIndex: '1' }}>
-                            Cancelar
-                        </Link>
-                        <button type="button" className="btn btn-outline-dark" data-mdb-ripple-color="dark" style={{ zIndex: '1' }} onClick={handleSubmit} >
-                            <i className="fa-solid fa-gear"></i> Guardar cambios
+                    <div className="d-flex justify-content-end text-center align-items-center py-1">
+                        <button type="submit" className="btn btn-outline-dark" data-mdb-ripple-color="dark" style={{ zIndex: '1' }} onClick={handleSubmit} >
+                            <p>Guardar cambios</p>
                         </button>
-
+                        <Link to="/user-profile" className="nav-link text-dark btn" data-mdb-ripple-color="dark" style={{ zIndex: '1', marginLeft: '5px' }}>
+                            <button type="button" className="btn btn-outline-dark">Cancelar</button>
+                        </Link>
                     </div>
                 </div>
                 <div className="card-body p-4 text-black">

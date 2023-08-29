@@ -45,7 +45,8 @@ export const UserViewOrderMessage = () => {
         setEnvio(value)
     }
 
-    const sendShippingCost = async () => {
+    const sendShippingCost = async (e) => {
+        e.preventDefault();
         const data = {
             'order_id': orderData.id,
             'shipping_cost': envio
@@ -62,7 +63,7 @@ export const UserViewOrderMessage = () => {
     }
 
     return (
-        <div>
+        <div style={{ marginBottom: '180px' }}>
             {/* Header */}
             <div className="card bg-black rounded-0 border-0">
                 <div
@@ -96,7 +97,7 @@ export const UserViewOrderMessage = () => {
                                 </div>
                             </div>
                         </div>
-                        <div className="col-md-10" style={{marginRight: '10px', width: '80%'}}>
+                        <div className="col-md-10" style={{ marginRight: '10px', width: '80%' }}>
                             <div id='message_center'>
                                 <div className="border rounded">
                                     <fieldset>
@@ -105,13 +106,7 @@ export const UserViewOrderMessage = () => {
                                                 <p>Cargando informacion del pedido...</p>
                                             ) : (
                                                 <div>
-                                                    {(orderData.haveShipping === false) ? (
-                                                    <div className='d-flex justify-content-end'>
-                                                        <button onClick={() => sendShippingCost()} className='btn btn-outline-dark'>Establcer precio de envío</button>
 
-                                                    </div>) : (
-                                                    <span></span>
-                                                )}  
                                                     <legend className="bg-light" style={{ padding: '0.4rem 0.4rem 0.4rem 1rem' }}><strong>Pedido #{orderData.id}</strong></legend>
                                                     <form>
                                                         <div className="p-3">
@@ -145,9 +140,9 @@ export const UserViewOrderMessage = () => {
 
                                                                                     <td>
                                                                                         {(orderData.haveShipping === true) ? (
-                                                                                            <span>${parseFloat(orderData.precio_total) + parseFloat(orderData.precio_envio)}</span>
+                                                                                            <span>${parseFloat(orderData.subtotal) + parseFloat(orderData.precio_envio)}</span>
                                                                                         ) : (
-                                                                                            <span>${parseFloat(orderData.precio_total)}</span>
+                                                                                            <span>${parseFloat(orderData.subtotal)}</span>
                                                                                         )}
                                                                                     </td>
                                                                                     <td>
@@ -167,7 +162,13 @@ export const UserViewOrderMessage = () => {
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                            {/* va aca */}
+                                                            {(orderData.haveShipping === false) ? (
+                                                                <div className='d-flex justify-content-end'>
+                                                                    <button type='button' onClick={(e) => sendShippingCost(e)} className='btn btn-outline-dark'>Establcer precio de envío</button>
+
+                                                                </div>) : (
+                                                                <span></span>
+                                                            )}
                                                         </div>
                                                     </form>
                                                 </div>

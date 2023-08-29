@@ -19,7 +19,7 @@ def get_offers(article_id):
         vendedor = User.query.filter_by(id=vendedor_id).first()
         article_dict = {
             'id': article.id,
-            'vendedor_nombre': vendedor.nombre,
+            'usuario': vendedor.usuario,
             'pais_vendedor': vendedor.pais_comprador,
             'valoracion': vendedor.valoracion,
             'cantidad_de_valoraciones': vendedor.cantidad_de_valoraciones,

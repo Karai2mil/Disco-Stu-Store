@@ -9,6 +9,8 @@ import { Context } from "../store/appContext";
 export const UserSellerDataEdit = () => {
     const { actions } = useContext(Context);
     const navigate = useNavigate();
+    const [clientIdPlaceholder, setClientIdPlaceholder] = useState('')
+    const [secretKeyPlaceholder, setSecretKeyPlaceholder] = useState('')
 
     const [sellerData, setSellerData] = useState({
         cliente_ID_paypal: "",
@@ -72,6 +74,27 @@ export const UserSellerDataEdit = () => {
         }
     };
 
+    useEffect(() => {
+        const paypalValidation = async () => {
+            const user_id = localStorage.getItem('userID')
+            const backendUrl = process.env.BACKEND_URL + `api/users/validate_paypal_connection/${user_id}`;
+            return await fetch(backendUrl, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                }
+            })
+                .then((response) => response.json())
+                .then((result) => {
+                    if (result.status == 'CONNECTED') {
+                        setClientIdPlaceholder(result.cliente_ID_paypal)
+                        setSecretKeyPlaceholder(result.secret_key_paypal)
+                    }
+                });
+        };
+        paypalValidation()
+    }), []
+
     return (
         <div className="container-fluid px-0 mx-0">
 
@@ -83,20 +106,18 @@ export const UserSellerDataEdit = () => {
                     </div>
                 </div>
                 <div className="p-4 text-black" style={{ backgroundColor: '#f8f9fa' }}>
-                    <div className="d-flex justify-content-end text-center py-1">
-
-                        <Link to="/user-profile" className="nav-link text-dark btn" data-mdb-ripple-color="dark" style={{ zIndex: '1' }}>
-                            Cancelar
-                        </Link>
+                    <div className="d-flex justify-content-end text-center align-items-center py-1">
                         <button type="submit" className="btn btn-outline-dark" data-mdb-ripple-color="dark" style={{ zIndex: '1' }} onClick={handleSubmit} >
-                            <i className="fa-solid fa-gear"></i> Guardar cambios
+                            <p>Guardar cambios</p>
                         </button>
-
+                        <Link to="/user-profile" className="nav-link text-dark btn" data-mdb-ripple-color="dark" style={{ zIndex: '1', marginLeft: '5px' }}>
+                            <button type="button" className="btn btn-outline-dark">Cancelar</button>
+                        </Link>
                     </div>
                 </div>
                 <div className="card-body p-4 text-black">
                     <div className="container">
-                        <h1>Informacion de vendedor</h1>
+                        <h2>Informacion de vendedor</h2>
                         <form onSubmit={handleSubmit}>
                             <div className="form-group">
                                 <label htmlFor="cliente_ID_paypal">Cliente ID*:</label>
@@ -106,9 +127,10 @@ export const UserSellerDataEdit = () => {
                                     id="cliente_ID_paypal"
                                     name="cliente_ID_paypal"
                                     value={sellerData.cliente_ID_paypal}
+                                    placeholder={`Información actual: ${clientIdPlaceholder}`}
                                     onChange={handleInputChange}
                                 />
-                                {formErrors.cliente_ID_paypal && <div className="error">{formErrors.cliente_ID_paypal}</div>}
+                                {formErrors.cliente_ID_paypal && <div className="error" style={{color: 'red'}}>{formErrors.cliente_ID_paypal}</div>}
                             </div>
                             <div className="form-group">
                                 <label htmlFor="secret_key_paypal">Secret Key*:</label>
@@ -118,13 +140,14 @@ export const UserSellerDataEdit = () => {
                                     id="secret_key_paypal"
                                     name="secret_key_paypal"
                                     value={sellerData.secret_key_paypal}
+                                    placeholder={`Información actual: ${secretKeyPlaceholder}`}
                                     onChange={handleInputChange}
                                 />
-                                {formErrors.secret_key_paypal && <div className="error">{formErrors.secret_key_paypal}</div>}
+                                {formErrors.secret_key_paypal && <div className="error" style={{color: 'red'}}>{formErrors.secret_key_paypal}</div>}
                             </div>
                             <p>*esta información no presenta riesgos de seguridad; su único propósito es identificar al vendedor en las comunicaciones con PayPal.</p>
                         </form>
-                        <h5><strong>¿Como encuentro esta información?</strong></h5>
+                        <h5 className="mt-4"><strong>¿Como encuentro esta información?</strong></h5>
                         <p><strong>Disco Stu Store utiliza PayPal como plataforma de pago. Para completar los pasos, debes registrarte en <a href="https://www.paypal.com/" target="_blank">PayPal</a>.</strong></p>
                         <p>1) Ingresa en el Dashboard de <a href="https://developer.paypal.com" target="_blank">PayPal Developer</a> con tu cuenta de PayPal.</p>
                         <p>2) Activa el formato <strong>Live</strong> y crea tu cuenta Business en caso de no tenerla.</p>

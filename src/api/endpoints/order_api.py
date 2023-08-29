@@ -19,7 +19,7 @@ def create_order():
         user_id = data.get('usuario_id')
         articles_ids = data.get('articles_ids', [])
         precio_envio = data.get('precio_envio', 0)
-        precio_total = data.get('precio_total', 0)
+        subtotal = data.get('subtotal', 0)
         condicion_funda = data.get('condicion_funda', '')
         condicion_soporte = data.get('condicion_soporte', '')
         vendedor_id = data.get('vendedor_id')
@@ -34,7 +34,7 @@ def create_order():
 
         pedido = Pedido(
             precio_envio=precio_envio,
-            precio_total=precio_total,
+            subtotal=subtotal,
             condicion_funda=condicion_funda,
             condicion_soporte=condicion_soporte,
             user_id=user_id,
@@ -90,6 +90,7 @@ def get_pedidos_by_user_id(user_id):
             pedido_data = {
                 'id': pedido.id,
                 'precio_envio': pedido.precio_envio,
+                'subtotal': pedido.subtotal,
                 'precio_total': pedido.precio_total,
                 'vendedor_id': pedido.vendedor_id,
                 'condicion_funda': pedido.condicion_funda,
@@ -127,6 +128,7 @@ def get_order_by_id(order_id):
 
         pedido_data = {
             'id': pedido.id,
+            'subtotal': pedido.subtotal,
             'precio_total': pedido.precio_total,
             'precio_envio': pedido.precio_envio,
             'vendedor_id': pedido.vendedor_id,
@@ -161,6 +163,11 @@ def set_shipping_cost():
 
         order=Pedido.query.get(order_id)
 
+        subtotal = float(order.subtotal)
+        shipping_cost = float(shipping_cost)
+        precio_total = subtotal + shipping_cost
+        
+        order.precio_total = precio_total
         order.precio_envio=shipping_cost
         order.haveShipping=True
         db.session.commit()
@@ -223,6 +230,7 @@ def actualizar_valoracion():
 
     vendedor_id = request.json.get('vendedor_id')
     positivo_o_negativo = request.json.get('positivo_o_negativo')
+    order_id = request.json.get('order_id')
 
     vendedor = User.query.get(vendedor_id)
     if vendedor:
@@ -240,9 +248,11 @@ def actualizar_valoracion():
                           total_valoraciones) * 100
         else:
             valoracion = 0
-
         vendedor.valoracion = valoracion
-        print('llegue')
+
+        pedido = Pedido.query.get(order_id)
+        pedido.valorado = True
+        
         db.session.commit()
 
         return jsonify('COMPLETED'), 200

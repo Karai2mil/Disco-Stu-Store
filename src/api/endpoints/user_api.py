@@ -314,6 +314,21 @@ def validate_seller(user_id):
         return jsonify('VALIDATED')
     else:
         return jsonify('NOT VALIDATED')
+    
+@user_api.route('/validate_paypal_connection/<int:user_id>', methods=['GET'])
+def validate_paypal_connection(user_id):
+
+    user = User.query.get(user_id)
+
+    cliente_ID_paypal = user.cliente_ID_paypal
+    secret_key_paypal = user.secret_key_paypal
+
+    if cliente_ID_paypal and secret_key_paypal:
+        return jsonify({'status': 'CONNECTED', 'cliente_ID_paypal': cliente_ID_paypal, 'secret_key_paypal': secret_key_paypal}), 200
+    else:
+        return jsonify('NOT CONNECTED'), 400
+    
+
 
 ######### Email ########
 

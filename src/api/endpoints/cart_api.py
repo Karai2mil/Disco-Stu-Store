@@ -28,8 +28,10 @@ def get_cart(user_id):
         }
         seller = User.query.filter_by(id=seller_id).first()
         seller_dict = {
-            'nombre': seller.nombre,
-            'id':  seller.id
+            'usuario': seller.usuario,
+            'id':  seller.id,
+            'valoracion': seller.valoracion,
+            'cantidad_de_valoraciones': seller.cantidad_de_valoraciones
         }
         object_dict['seller'] = seller_dict
         offers_ids = [elem.oferta_id for elem in cart_element_unordered if elem.vendedor_id == seller_id]
@@ -88,7 +90,7 @@ def new_cart_element():
         'oferta_id': new_element.oferta_id
     }
 
-    return jsonify('Cart element added', return_element)
+    return jsonify("COMPLETED")
 
 
 @cart_api.route('/delete_item', methods=['DELETE'])

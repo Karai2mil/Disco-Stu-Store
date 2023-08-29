@@ -17,6 +17,7 @@ const SellArticle = () => {
     const [comentario, setComentario] = useState('')
     const [cantidad, setCantidad] = useState('')
     const [precio, setPrecio] = useState('')
+    const [isSeller, setIsSeller] = useState(false)
 
     const handleSoporte = (event) => {
         setSoporte(event.target.value)
@@ -75,7 +76,9 @@ const SellArticle = () => {
             })
                 .then((response) => response.json())
                 .then((result) => {
-                    if (result == 'NOT VALIDATED') {
+                    if (result == 'VALIDATED') {
+                        setIsSeller(true)
+                    } else if (result == 'NOT VALIDATED') {
                         navigate('/sellers')
                     }
                 });
@@ -85,100 +88,104 @@ const SellArticle = () => {
 
     return (
         <div className="container">
-            <div id='title'>
-                <h4><strong>Vender articulo</strong></h4>
-                <p>Por favor, verifica que este sea el articulo que deseas vender.</p>
-            </div>
-            <div id="article_info" className="row d-flex">
-                <div id="image" className='col-md-2'>
-                    <img className="img-fluid" src={article.url_imagen} alt="" />
-                </div>
-                <div className="col-md-9">
-                    <h5><strong>{article.titulo}</strong></h5>
-                    <div className="d-flex">
-                        <p style={{ width: '40px' }}>Sello:</p>
-                        <p>{article.sello}</p>
-                    </div>
-                    <div className="d-flex">
-                        <p style={{ width: '40px' }}>Formato:</p>
-                        <p>{article.formato}</p>
-                    </div>
-                    <div className="d-flex">
-                        <p style={{ width: '40px' }}>Pais:</p>
-                        <p>{article.pais}</p>
-                    </div>
-                    <div className="d-flex">
-                        <p style={{ width: '40px' }}>Publicado:</p>
-                        <p>{article.publicado}</p>
-                    </div>
-                    <div className="d-flex">
-                        <p style={{ width: '40px' }}>Genero:</p>
-                        <p>{article.genero}</p>
-                    </div>
-                    <div className="d-flex">
-                        <p style={{ width: '40px' }}>Estilos:</p>
-                        <p>{article.estilos}</p>
-                    </div>
-                </div>
-            </div>
-            <div id='advertencia'>
-                <p style={{ fontSize: '1rem', padding: '5px 0px 5px 10px' }}><strong>El listado de articulos es gratis, Disco Stu cobrara una tarifa del 5% una vez finalizada la venta.</strong></p>
-            </div>
-            <div id='properties'>
+            {isSeller &&
                 <div>
-                    <h5><strong>Estado y comentarios</strong></h5>
-                </div>
-                <div style={{ marginTop: '20px' }}>
-                    <label htmlFor="condicionSoporte">Condición del soporte</label>
-                    <select onChange={(e) => handleSoporte(e)} value={soporte} className="form-select form-select-sm" id='condicionSoporte' aria-label="Small select example">
-                        <option value="">Seleccionar condicion</option>
-                        <option value="Nuevo (N)">Nuevo (N)</option>
-                        <option value="Casi Nuevo (CN)">Casi Nuevo (CN)</option>
-                        <option value="Buen Estado (BE)">Buen Estado (BE)</option>
-                        <option value="Gastado (G)">Gastado (G)</option>
-                        <option value="Deteriorado (D)">Deteriorado (D)</option>
-                    </select>
-                </div>
-                <div style={{ marginTop: '20px' }}>
-                    <label htmlFor="condicionFunda">Condición de la funda</label>
-                    <select onChange={(e) => handleFunda(e)} value={funda} className="form-select form-select-sm" id='condicionFunda' aria-label="Small select example">
-                        <option value="">Seleccionar condicion</option>
-                        <option value="Genérico">Genérico</option>
-                        <option value="Sin Funda">Sin Funda</option>
-                        <option value="Nuevo (N)">Nuevo (N)</option>
-                        <option value="Casi Nuevo (CN)">Casi Nuevo (CN)</option>
-                        <option value="Buen Estado (BE)">Buen Estado (BE)</option>
-                        <option value="Gastado (G)">Gastado (G)</option>
-                        <option value="Deteriorado (D)">Deteriorado (D)</option>
-                    </select>
-                </div>
-                <div style={{ marginTop: '20px' }}>
-                    <label htmlFor="comentarios">Comentarios específicos</label>
-                    <textarea onChange={(e) => handleComentario(e)} value={comentario} maxLength="300" className="form-control" id='comentarios' placeholder='ejemplo: funda con bordes dañados y soporte con etiqueta de precio en galleta.'></textarea>
-                </div>
-                <div style={{ marginTop: '20px' }}>
-                    <label htmlFor="cantidad">Cantidad</label>
-                    <select onChange={(e) => handleCantidad(e)} value={cantidad} style={{ width: '80px' }} className="form-select form-select-sm" id='cantidad' aria-label="Small select example">
-                        <option value=""></option>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                        <option value="5">5</option>
-                    </select>
-                </div>
-                <div id='precio' style={{ marginTop: '20px' }}>
-                    <h5><strong>Precio</strong></h5>
-                </div>
-                <div style={{ marginTop: '20px' }}>
-                    <label htmlFor="precio">Precio (USD)</label>
-                    <div style={{ paddingLeft: '10px' }}>
-                        <span>$</span>
-                        <input onChange={(e) => handlePrecio(e)} value={precio} type="text" style={{ width: '100px' }} />
+                    <div id='title'>
+                        <h4><strong>Vender articulo</strong></h4>
+                        <p>Por favor, verifica que este sea el articulo que deseas vender.</p>
+                    </div>
+                    <div id="article_info" className="row d-flex">
+                        <div id="image" className='col-md-2'>
+                            <img className="img-fluid" src={article.url_imagen} alt="" />
+                        </div>
+                        <div className="col-md-9">
+                            <h5><strong>{article.titulo}</strong></h5>
+                            <div className="d-flex">
+                                <p style={{ width: '40px' }}>Sello:</p>
+                                <p>{article.sello}</p>
+                            </div>
+                            <div className="d-flex">
+                                <p style={{ width: '40px' }}>Formato:</p>
+                                <p>{article.formato}</p>
+                            </div>
+                            <div className="d-flex">
+                                <p style={{ width: '40px' }}>Pais:</p>
+                                <p>{article.pais}</p>
+                            </div>
+                            <div className="d-flex">
+                                <p style={{ width: '40px' }}>Publicado:</p>
+                                <p>{article.publicado}</p>
+                            </div>
+                            <div className="d-flex">
+                                <p style={{ width: '40px' }}>Genero:</p>
+                                <p>{article.genero}</p>
+                            </div>
+                            <div className="d-flex">
+                                <p style={{ width: '40px' }}>Estilos:</p>
+                                <p>{article.estilos}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div id='advertencia'>
+                        <p style={{ fontSize: '1rem', padding: '5px 0px 5px 10px' }}><strong>El listado de articulos es gratis, Disco Stu cobrara una tarifa del 5% una vez finalizada la venta.</strong></p>
+                    </div>
+                    <div id='properties'>
+                        <div>
+                            <h5><strong>Estado y comentarios</strong></h5>
+                        </div>
+                        <div style={{ marginTop: '20px' }}>
+                            <label htmlFor="condicionSoporte">Condición del soporte</label>
+                            <select onChange={(e) => handleSoporte(e)} value={soporte} className="form-select form-select-sm" id='condicionSoporte' aria-label="Small select example">
+                                <option value="">Seleccionar condicion</option>
+                                <option value="Nuevo (N)">Nuevo (N)</option>
+                                <option value="Casi Nuevo (CN)">Casi Nuevo (CN)</option>
+                                <option value="Buen Estado (BE)">Buen Estado (BE)</option>
+                                <option value="Gastado (G)">Gastado (G)</option>
+                                <option value="Deteriorado (D)">Deteriorado (D)</option>
+                            </select>
+                        </div>
+                        <div style={{ marginTop: '20px' }}>
+                            <label htmlFor="condicionFunda">Condición de la funda</label>
+                            <select onChange={(e) => handleFunda(e)} value={funda} className="form-select form-select-sm" id='condicionFunda' aria-label="Small select example">
+                                <option value="">Seleccionar condicion</option>
+                                <option value="Genérico">Genérico</option>
+                                <option value="Sin Funda">Sin Funda</option>
+                                <option value="Nuevo (N)">Nuevo (N)</option>
+                                <option value="Casi Nuevo (CN)">Casi Nuevo (CN)</option>
+                                <option value="Buen Estado (BE)">Buen Estado (BE)</option>
+                                <option value="Gastado (G)">Gastado (G)</option>
+                                <option value="Deteriorado (D)">Deteriorado (D)</option>
+                            </select>
+                        </div>
+                        <div style={{ marginTop: '20px' }}>
+                            <label htmlFor="comentarios">Comentarios específicos</label>
+                            <textarea onChange={(e) => handleComentario(e)} value={comentario} maxLength="300" className="form-control" id='comentarios' placeholder='ejemplo: funda con bordes dañados y soporte con etiqueta de precio en galleta.'></textarea>
+                        </div>
+                        <div style={{ marginTop: '20px' }}>
+                            <label htmlFor="cantidad">Cantidad</label>
+                            <select onChange={(e) => handleCantidad(e)} value={cantidad} style={{ width: '80px' }} className="form-select form-select-sm" id='cantidad' aria-label="Small select example">
+                                <option value=""></option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                            </select>
+                        </div>
+                        <div id='precio' style={{ marginTop: '20px' }}>
+                            <h5><strong>Precio</strong></h5>
+                        </div>
+                        <div style={{ marginTop: '20px' }}>
+                            <label htmlFor="precio">Precio (USD)</label>
+                            <div style={{ paddingLeft: '10px' }}>
+                                <span>$</span>
+                                <input onChange={(e) => handlePrecio(e)} value={precio} type="text" style={{ width: '100px' }} />
+                            </div>
+                        </div>
+                        <button onClick={() => postOffer()} type='button' className='btn btn-dark'>Poner articulos en venta</button>
                     </div>
                 </div>
-                <button onClick={() => postOffer()} type='button' className='btn btn-dark'>Poner articulos en venta</button>
-            </div>
+            }
         </div>
     );
 };

@@ -243,6 +243,7 @@ pedido_articulos = db.Table('pedido_articulos',
 class Pedido(db.Model):
     __tablename__ = 'pedido'
     id = db.Column(db.Integer, primary_key=True)
+    subtotal = db.Column(db.Integer)
     precio_envio = db.Column(db.Integer, default=None)
     precio_total = db.Column(db.Integer)
     impuesto = db.Column(db.Integer)
