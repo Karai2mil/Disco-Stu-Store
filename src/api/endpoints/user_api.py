@@ -202,25 +202,20 @@ def edit_user(user_id):
 
     try:
         data = request.get_json()
-        user.nombre = data.get('name', user.nombre)
-        user.correo = data.get('email', user.correo)
+        user.nombre = data.get('nombre', user.nombre)
         user.is_admin = data.get('is_admin', user.is_admin)
-        # user.contrasenha = data.get('password', user.contrasenha)
         user.direccion_comprador = data.get(
-            'address', user.direccion_comprador)
-        user.ciudad_comprador = data.get('city', user.direccion_comprador)
-        user.estado_comprador = data.get('state', user.direccion_comprador)
+            'direccion_comprador', user.direccion_comprador)
+        user.ciudad_comprador = data.get('ciudad_comprador', user.direccion_comprador)
+        user.estado_comprador = data.get('estado_comprador', user.direccion_comprador)
         user.codigo_postal_comprador = data.get(
-            'postal_code', user.direccion_comprador)
-        user.pais_comprador = data.get('country', user.direccion_comprador)
+            'codigo_postal_comprador', user.direccion_comprador)
+        user.pais_comprador = data.get('pais_comprador', user.direccion_comprador)
         user.telefono_comprador = data.get(
-            'telephone', user.direccion_comprador)
-        # user.valoracion = data.get('country', user.valoracion)
-        # user. cantidad_de_valoraciones = data.get(
-        #     'telephone', user.cantidad_de_valoraciones)
-
+            'telefono_comprador', user.direccion_comprador)
         db.session.commit()
-        return jsonify({"message": "Usuario editado exitosamente"}), 200
+        
+        return jsonify('COMPLETED'), 200
     except Exception as e:
         db.session.rollback()
         return jsonify({"message": "Error al editar el usuario", "error": str(e)}), 500

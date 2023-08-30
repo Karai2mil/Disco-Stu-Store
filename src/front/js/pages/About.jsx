@@ -30,7 +30,6 @@ const About = () => {
             )
             .then(
                 (result) => {
-                    console.log(result.text);
                     Swal.fire({
                         icon: "success",
                         title: "Mensaje enviado",
@@ -39,7 +38,6 @@ const About = () => {
                     actions.resetForm();
                 },
                 (error) => {
-                    console.log(error.text);
                     Swal.fire({
                         icon: "error",
                         title: "Error al enviar el mensaje",
@@ -53,10 +51,10 @@ const About = () => {
         <div>
             <div>
                 {/* Jumbotron o Header */}
-                <section className="jumbotron py-4 text-center bg-dark text-white mb-5">
+                <section className="jumbotron py-4 text-center bg-black text-white mb-5">
                     <div className="container text-center">
                         <h1 className="jumbotron-heading mb-4">Disco Stu Store</h1>
-                        <p className="lead mb-5">
+                        <p className="mb-5" style={{fontSize: '1.1rem'}}>
                             El proyecto ‘Disco Stu Store’ busca crear una aplicación web al
                             estilo eCommerce para compra, venta y publicación de artículos de
                             registro musical como vinilos, cassettes y cd’s. La página brinda
@@ -71,82 +69,6 @@ const About = () => {
                     </div>
                 </section>
 
-                <div>
-                    {/* Seccion Integrantes */}
-                    <div className="container mt-4 text-center">
-                        <h2 className="fs-2 m-4">Disco Stu Team</h2>
-                        {/* Three columns of text below the carousel */}
-                        <div className="row g-4">
-                            <div className="col-lg-4 p-4">
-                                <img
-                                    className="rounded-circle mb-4"
-                                    src="https://picsum.photos/200/300?random=5"
-                                    alt="Profile picture 1"
-                                    width="140"
-                                    height="140"
-                                />
-                                <h2>Andres</h2>
-                                <p>
-                                    <p className="text-muted">Full Stack Web Developer</p>
-                                    <ul className="list-group text-start list-group-flush">
-                                        <li className="list-group-item">
-                                            <i className="fa-brands fa-github nav-link"></i>
-
-                                        </li>
-                                        <li className="list-group-item">
-                                            <i className="fa-brands fa-linkedin nav-link"></i>
-                                        </li>
-                                    </ul>
-                                </p>
-                            </div>
-                            <div className="col-lg-4 p-4">
-                                <img
-                                    className="rounded-circle mb-4"
-                                    src="https://picsum.photos/200/300?random=6"
-                                    alt="Profile picture 2"
-                                    width="140"
-                                    height="140"
-                                />
-                                <h2>Karai</h2>
-                                <p>
-                                    <p className="text-muted">Full Stack Web Developer</p>
-                                    <ul className="list-group text-start list-group-flush">
-                                        <li className="list-group-item">
-                                            <i className="fa-brands fa-github nav-link"></i>
-                                        </li>
-                                        <li className="list-group-item nav-link">
-                                            <i className="fa-brands fa-linkedin nav-link"></i>
-                                        </li>
-                                    </ul>
-                                </p>
-                            </div>
-                            <div className="col-lg-4 p-4">
-                                <img
-                                    className="rounded-circle mb-4"
-                                    src="https://picsum.photos/200/300?random=7"
-                                    alt="Profile picture 3"
-                                    width="140"
-                                    height="140"
-                                />
-                                <h2>Fercho</h2>
-                                <p>
-                                    <p className="text-muted">Full Stack Web Developer</p>
-                                    <ul className="list-group text-start list-group-flush">
-                                        <li className="list-group-item">
-                                            <i className="fa-brands fa-github nav-link"></i>
-
-                                        </li>
-                                        <li className="list-group-item">
-                                            <i className="fa-brands fa-github nav-link">
-
-                                            </i>
-                                        </li>
-                                    </ul>
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
 
                 {/* Formulario de contacto */}
                 <div className="container my-4">
@@ -252,3 +174,77 @@ const About = () => {
 };
 
 export default About;
+
+// Descomentar todo con chatgpt en caso de querer usarlo
+{/* <div> */}
+    {/* Seccion Integrantes */}
+    {/* <div className="container mt-4 text-center"> */}
+    {/* <h2 className="fs-2 m-4">Disco Stu Team</h2> */}
+    {/* Three columns of text below the carousel */}
+    {/* <div className="row g-4"> */}
+    {/* <div className="col-lg-4 p-4"> */}
+        {/* Perfil 1 */}
+        {/* <img */}
+        {/*     className="rounded-circle mb-4" */}
+        {/*     src="https://picsum.photos/200/300?random=5" */}
+        {/*     alt="Profile picture 1" */}
+        {/*     width="140" */}
+        {/*     height="140" */}
+        {/* /> */}
+        {/* <h2>Andres</h2> */}
+        {/* <p> */}
+            {/* Rol y enlaces de perfil de Andres */}
+            {/* <p className="text-muted">Full Stack Web Developer</p> */}
+            {/* <ul className="list-group text-start list-group-flush"> */}
+                {/* Enlace al perfil de GitHub de Andres */}
+                {/* <i className="fa-brands fa-github nav-link"></i> */}
+                {/* Enlace al perfil de LinkedIn de Andres */}
+                {/* <i className="fa-brands fa-linkedin nav-link"></i> */}
+            {/* </ul> */}
+        {/* </p> */}
+    {/* </div> */}
+    {/* <div className="col-lg-4 p-4"> */}
+        {/* Perfil 2 */}
+        {/* <img */}
+        {/*     className="rounded-circle mb-4" */}
+        {/*     src="https://picsum.photos/200/300?random=6" */}
+        {/*     alt="Profile picture 2" */}
+        {/*     width="140" */}
+        {/*     height="140" */}
+        {/* /> */}
+        {/* <h2>Karai</h2> */}
+        {/* <p> */}
+            {/* Rol y enlaces de perfil de Karai */}
+            {/* <p className="text-muted">Full Stack Web Developer</p> */}
+            {/* <ul className="list-group text-start list-group-flush"> */}
+                {/* Enlace al perfil de GitHub de Karai */}
+                {/* <i className="fa-brands fa-github nav-link"></i> */}
+                {/* Enlace al perfil de LinkedIn de Karai */}
+                {/* <i className="fa-brands fa-linkedin nav-link"></i> */}
+            {/* </ul> */}
+        {/* </p> */}
+    {/* </div> */}
+    {/* <div className="col-lg-4 p-4"> */}
+        {/* Perfil 3 */}
+        {/* <img */}
+        {/*     className="rounded-circle mb-4" */}
+        {/*     src="https://picsum.photos/200/300?random=7" */}
+        {/*     alt="Profile picture 3" */}
+        {/*     width="140" */}
+        {/*     height="140" */}
+        {/* /> */}
+        {/* <h2>Fercho</h2> */}
+        {/* <p> */}
+            {/* Rol y enlaces de perfil de Fercho */}
+            {/* <p className="text-muted">Full Stack Web Developer</p> */}
+            {/* <ul className="list-group text-start list-group-flush"> */}
+                {/* Enlace al perfil de GitHub de Fercho */}
+                {/* <i className="fa-brands fa-github nav-link"></i> */}
+                {/* Enlace al perfil de LinkedIn de Fercho */}
+                {/* <i className="fa-brands fa-linkedin nav-link"></i> */}
+            {/* </ul> */}
+        {/* </p> */}
+    {/* </div> */}
+    {/* </div> */}
+    {/* </div> */}
+// </div>

@@ -16,7 +16,6 @@ export const UserProfile = () => {
             try {
                 const userId = localStorage.getItem('userID');
                 const userData = await actions.getUserById(userId);
-                console.log("Data de usuario", userData);
                 setUserData(userData);
             } catch (error) {
                 console.error("Error al obtener la información del usuario:", error);
@@ -71,7 +70,7 @@ export const UserProfile = () => {
                 <div className="p-4 text-black" style={{ backgroundColor: '#f8f9fa' }}>
                     <h3 className="text-center mb-3">Perfil de {userData.usuario}</h3>
                     <div className="card-body p-4 text-black">
-                        <div className="mb-5">
+                        <div className="mb-5" style={{border: '1px solid #eeeeee', padding: '10px 30px'}}>
                             <p className="lead fw-normal mb-1">Información de envio: </p>
                             <div className="p-4" style={{ backgroundColor: '#f8f9fa' }}>
                                 <p className="font-italic mb-1">Dirección: {userData.direccion_comprador}</p>
@@ -86,7 +85,7 @@ export const UserProfile = () => {
                                 </Link>
                             </div>
                         </div>
-                        <div className="mb-5">
+                        <div className="mb-5" style={{border: '1px solid #eeeeee', padding: '10px 30px'}}>
                             <p className="lead fw-normal mb-1">Informacion de vendedor:</p>
                             <div className="p-4" style={{ backgroundColor: '#f8f9fa', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                                 <div>

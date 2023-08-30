@@ -74,7 +74,6 @@ export const AdminArchivedMessages = () => {
         try {
             await Promise.all(selectedItems.map(async (messageId) => {
                 const response = await actions.recoverDeletedMessage(messageId); // Cambia esto a la acción real para recuperar mensajes
-                console.log('Message recovered successfully', response);
             }));
             setSelectedItems([]);
             // Actualiza la lista de mensajes eliminados después de la recuperación

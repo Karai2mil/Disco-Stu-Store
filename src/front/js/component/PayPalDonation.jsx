@@ -54,7 +54,6 @@ const PayPalDonation = () => {
         })
         .then((response) => response.json())
         .then((responseData) => {
-            console.log('Successfully payment:', responseData);
             
             //Convertimos al usuario en vendedor
             if (responseData.status == 'COMPLETED') {

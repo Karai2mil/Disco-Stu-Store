@@ -81,7 +81,6 @@ export const UserDeletedMessages = () => {
 
     const handleViewMessage = (element) => {
         if (users.length > 0) {
-            console.log('entre')
             const emisor = users.find((user) => user.id === element.emisor_id);
             const receptor = users.find((user) => user.id == element.receptor_id)
             const emisorName = emisor.username;

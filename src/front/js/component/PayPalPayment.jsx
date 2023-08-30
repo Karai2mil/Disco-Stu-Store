@@ -3,7 +3,7 @@ import { Context } from '../store/appContext'
 import { PayPalButtons } from "@paypal/react-paypal-js";
 import Swal from 'sweetalert2';
 
-const PaymentComponent = ({ orderID, cost, updatePageData, seller_id }) => {
+const PaymentComponent = ({ orderID, cost, updatePageData, seller_id, ofertas_ids }) => {
     const { store, actions } = useContext(Context);
 
     const createOrder = async (data) => {
@@ -50,9 +50,8 @@ const PaymentComponent = ({ orderID, cost, updatePageData, seller_id }) => {
 
             if (responseData.status === 'COMPLETED') {
                 const nuevo_estado_pagado = true;
-                console.log(orderID, nuevo_estado_pagado);
                 const pedido_id = orderID;
-
+                await actions.deleteOffer(ofertas_ids)
                 await actions.updatePaymentStatus({ orderID: pedido_id, nuevo_estado_pagado });
 
                 Swal.fire({

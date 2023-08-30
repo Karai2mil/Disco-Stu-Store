@@ -47,7 +47,6 @@ const User_inbox = () => {
         const fetchData = async () => {
             try {
                 const fetchUsers = await actions.getAllUsersInfo(userId)
-                console.log('entramos', fetchUsers)
                 setUsers(fetchUsers);
             } catch (error) {
                 console.log('Error fetching data: ', error);
@@ -78,7 +77,6 @@ const User_inbox = () => {
     const handleViewMessage = async (element) => {
         if (element.isMessage == 'True'){
             if (users.length > 0) {
-                console.log('entre')
                 const emisor = users.find((user) => user.id === element.emisor_id);
                 const receptor = users.find((user) => user.id == element.receptor_id)
                 const emisorName = emisor.username;

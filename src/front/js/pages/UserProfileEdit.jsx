@@ -4,6 +4,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { Context } from "../store/appContext";
 
 export const UserProfileEdit = () => {
+
+    const navigate = useNavigate()
     const { actions } = useContext(Context);
     const { userCurrentData } = useState([]);
 
@@ -13,7 +15,6 @@ export const UserProfileEdit = () => {
             try {
                 const userId = localStorage.getItem('userID');
                 const userCurrentData = await actions.getUserById(userId);
-                console.log("Data de usuario", userCurrentData);
             } catch (error) {
                 console.error("Error al obtener la información del usuario:", error);
             }
@@ -23,7 +24,6 @@ export const UserProfileEdit = () => {
 
     const [userData, setUserData] = useState({
         nombre: "John Doe",
-        // correo: "john@example.com",
         direccion_comprador: "123 Main St",
         ciudad_comprador: "New York",
         estado_comprador: "NY",
@@ -50,8 +50,9 @@ export const UserProfileEdit = () => {
             const userId = localStorage.getItem('userID')
             const responseMessage = await actions.editUser(userId, userData);
 
-            console.log(responseMessage);
-
+            if (responseMessage == 'COMPLETED') {
+                navigate('/user-profile')
+            }
         } catch (error) {
             console.error(error.message);
         }

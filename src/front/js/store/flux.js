@@ -27,11 +27,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 					});
 
 					if (response.ok) {
-						const data = await response.json();
-						console.log("User has been created:", data);
 						return true;
 					} else {
-
 						const errorResponse = await response.json();
 						throw new Error(errorResponse.message); // Throw an error with the server's error message
 					}
@@ -62,7 +59,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 					const token = responseData.access_token;
 					const userID = responseData.user_id;
 					const auth = responseData.is_admin;
-					console.log(auth)
 					localStorage.setItem('token', token);
 					localStorage.setItem('userID', userID);
 					localStorage.setItem('Auth', auth);
@@ -122,8 +118,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 			getUserById: async (userId) => {
 				try {
 					const token = localStorage.getItem('token');
-					console.log(token)
-
 					const backendUrl = process.env.BACKEND_URL + `api/users/profile/${userId}`;
 					const response = await fetch(backendUrl, {
 						method: 'GET',
@@ -131,11 +125,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 							Authorization: `Bearer ${token}`
 						}
 					});
-
 					const userData = await response.json();
-
 					return userData;
-
 				} catch (error) {
 					throw new Error("Error al obtener información del usuario. Por favor, inténtelo de nuevo más tarde.");
 				}
@@ -154,16 +145,12 @@ const getState = ({ getStore, getActions, setStore }) => {
 						},
 						body: JSON.stringify(userData),
 					});
-
 					if (!response.ok) {
 						const responseData = await response.json();
 						throw new Error(responseData.error || "Error al editar el usuario");
 					}
-
 					const responseData = await response.json();
-					return responseData.message;
-					return responseData.message;
-
+					return responseData
 				} catch (error) {
 					throw new Error("Error al editar el usuario. Por favor, inténtelo de nuevo más tarde.");
 				}
@@ -219,7 +206,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 						throw new Error('Response error')
 					}
 					const data = await response.json()
-					console.log("Data obtenida de mensajes por id de usuario", data);
 					return data;
 				} catch (error) {
 					console.log('Error charging messages: ', error)
@@ -241,7 +227,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 						console.log('Response error', response.status)
 					}
 					const data = await response.json()
-					console.log('Message sent succesfully', data)
 					return data;
 				} catch (error) {
 					console.log('Error sending message: ', error)
@@ -262,7 +247,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 						if (!response.ok) {
 							console.log('Response error:', response.status);
 						}
-
 						const data = await response.json();
 						return data
 				} catch (error) {
@@ -284,7 +268,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 						if (!response.ok) {
 							console.log('Response error:', response.status);
 						}
-
 						const data = await response.json();
 						return data
 				} catch (error) {
@@ -306,7 +289,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 						if (!response.ok) {
 							console.log('Response error:', response.status);
 						}
-
 						const data = await response.json();
 						return data
 				} catch (error) {
@@ -328,7 +310,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 						if (!response.ok) {
 							console.log('Response error:', response.status);
 						}
-
 						const data = await response.json();
 						return data
 				} catch (error) {
@@ -371,20 +352,15 @@ const getState = ({ getStore, getActions, setStore }) => {
 					throw new Error("Error al intentar obtener Artículos");
 
 				const data = await response.json();
-				console.log(data)
-
 				const store = getStore()
 				setStore({
 					...store,
 					explorer_articles: data,
 					on_filtered_or_explorer: true
 				})
-
-
 				if (response.status == 400) {
 					throw new Error(data.message);
 				}
-
 				return data;
 			},
 			getAllArticlesGroupedByGenre: async () => {
@@ -516,12 +492,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 					if (!response.ok) {
 						throw new Error('Error on adding Article response');
 					}
-
 					const data = await response.json();
-
-					console.log('Article added:', data);
 					return data;
-
 				} catch (error) {
 					console.error('Error posting Article:', error);
 					throw error;
@@ -571,14 +543,12 @@ const getState = ({ getStore, getActions, setStore }) => {
 			},
 			expandedSearch: async (searchContent) => {
 				try {
-					console.log(searchContent)
 					const backendUrl = process.env.BACKEND_URL + "api/searchbar/search/" + searchContent;
 					const response = await fetch(backendUrl)
 					if (!response.ok)
 						throw new Error("Error on searching response");
 
 					const data = await response.json();
-					// console.log(data)
 					const store = getStore()
 					setStore({ ...store, filtered_explorer_articles: [] })
 					setStore({
@@ -641,8 +611,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 						throw new Error('Response error')
 					}
 					const data = await response.json()
-					console.log('Messages obtained succesfully: ', data)
-
 				} catch (error) {
 					console.log('Error charging messages: ', error)
 				}
@@ -656,8 +624,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 						throw new Error('Response error')
 					}
 					const data = await response.json()
-					console.log('Messages obtained succesfully: ', data)
-
 				} catch (error) {
 					console.log('Error getting archived messages: ', error)
 				}
@@ -675,10 +641,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					if (!response.ok) {
 						throw new Error('Error on adding offer response')
 					}
-
 					const data = await response.json()
-					console.log('Offer added:', data)
-
 				} catch (error) {
 					console.log('Error posting offer:', error)
 				}
@@ -693,10 +656,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 						throw new Error('Error on getting offers response')
 					}
 					const data = await response.json()
-					console.log('Offers obtained')
 					const store = getStore()
 					setStore({ ...store, currentOffers: data })
-					console.log("Ofertas obtenidas", store.currentOffers)
 				} catch (error) {
 					console.log('Error getting offers:', error)
 				}
@@ -704,7 +665,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 			newCartElement: async (new_element) => {
 				try {
-					console.log(new_element)
 					const backendUrl = process.env.BACKEND_URL + "/api/cart/add";
 					const response = await fetch(backendUrl, {
 						method: "POST",
@@ -739,7 +699,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 					const data = await response.json()
 					const store = getStore()
 					setStore({ ...store, cart: data })
-					console.log("Carrito obtenido", store.cart)
 				} catch (error) {
 					console.log('Error getting cart:', error)
 				}
@@ -785,8 +744,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 						throw new Error('Error on deleting cart element response')
 					}
 					const data = await response.json()
-
-					console.log('Cart article deleted', data)
 				} catch (error) {
 					console.log('Error deleting cart article:', error)
 				}
@@ -809,8 +766,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 						throw new Error('Error on deleting cart by seller response')
 					}
 					const data = await response.json()
-
-					console.log('Cart article deleted', data)
 				} catch (error) {
 					console.log('Error deleting cart articles by seller:', error)
 				}
@@ -917,11 +872,12 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 			},
 
-			createOrder: async ({ usuario_id, articles_ids, precio_envio, subtotal, impuesto, condicion_funda, condicion_soporte, vendedor_id, pagado }) => {
+			createOrder: async ({ usuario_id, articles_ids, ofertas_ids, precio_envio, subtotal, impuesto, condicion_funda, condicion_soporte, vendedor_id, pagado }) => {
 				try {
 					const requestData = {
 						usuario_id: usuario_id,
 						articles_ids: articles_ids,
+						ofertas_ids: ofertas_ids,
 						precio_envio: precio_envio,
 						subtotal: subtotal,
 						impuesto: impuesto,
@@ -1021,9 +977,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 					const data = await response.json();
 					const order = data;
-
 					return order;
-
 				} catch (error) {
 					console.error('Error setting order shipping:', error);
 					throw error;
@@ -1045,7 +999,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 					}
 					const data = await response.json();
 					return data;
-
 				} catch (error) {
 					console.error('Error getting curiosities:', error);
 				}
@@ -1111,7 +1064,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 				});
 				const data = await response.json()
 				return data;
-
 			},
 
 			forgotPassword: async (email) => {
@@ -1162,7 +1114,27 @@ const getState = ({ getStore, getActions, setStore }) => {
 					console.error('Error updating rating', error);
 					throw error;
 				}
-			}
+			},
+
+			deleteOffer: async (ofertas_ids) => {
+				try {
+					const backendUrl = process.env.BACKEND_URL + `/api/offers/delete`;
+					const response = await fetch(backendUrl, {
+						method: 'DELETE',
+						headers: {
+							'Content-Type': 'application/json',
+						},
+						body: JSON.stringify({"ofertas_ids": ofertas_ids})
+					});
+
+					if (!response.ok) {
+						throw new Error('Failed to delete offer');
+					}
+				} catch (error) {
+					console.error('Error deleting offer', error);
+					throw error;
+				}
+			},
 		}
 	};
 };

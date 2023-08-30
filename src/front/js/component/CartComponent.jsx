@@ -54,12 +54,12 @@ const CartComponent = ({ data }) => {
       const usuario_id = localStorage.getItem('userID');
       const pedido_id = generateRandomOrderNumber();
       const articles_ids = data.offers.map(offer => offer.articulo_id);
+      const ofertas_ids = data.offers.map(offer => offer.oferta_id);
       const subtotal = data.offers.reduce((total, element) => total + element.precio, 0);
       const condicion_funda = data.offers[0].condicion_funda;
       const condicion_soporte = data.offers[0].condicion_soporte;
       const vendedor_id = data.seller.id;
       const pagado = false;
-
       const swalResult = await Swal.fire({
         title: 'Confirmar orden',
         text: '¿Estás seguro de que deseas realizar la orden?',
@@ -74,13 +74,13 @@ const CartComponent = ({ data }) => {
           usuario_id,
           pedido_id,
           articles_ids,
+          ofertas_ids,
           subtotal,
           condicion_funda,
           condicion_soporte,
           vendedor_id,
           pagado
         });
-        console.log(response);
         handlerDeleteAllItems();
         navigate('/user-orders');
       }

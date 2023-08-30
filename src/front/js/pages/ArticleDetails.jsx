@@ -14,7 +14,6 @@ const ArticleDetails = () => {
     const handleAddFavorites = async (user_id, article_id) => {
         try {
             const response = await actions.addFavorites(user_id, article_id);
-            console.log('Favorite added successfully:', response);
 
             Swal.fire({
                 title: 'Agregado a favoritos',
@@ -50,7 +49,6 @@ const ArticleDetails = () => {
             })
                 .then((response) => response.json())
                 .then((result) => {
-                    console.log(result)
                     if (result == 'VALIDATED') {
                         navigate(`/sell/${article.id}`)
                     } else {

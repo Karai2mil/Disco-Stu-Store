@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { Context } from '../store/appContext';
 import CartComponent from '../component/CartComponent.jsx'
-import PayPalPayment from '../component/PayPalPayment.jsx'
 import noCart from '../../img/carroVacio.png'
 
 
@@ -15,7 +14,7 @@ const Cart = () => {
     }, []);
 
     return (
-        <div className='container'>
+        <div className='container' style={{marginBottom: '132px'}}>
 
             <div className='row'>
                 <div className='col-md-12 mt-4' style={{ marginLeft: '30px' }}>

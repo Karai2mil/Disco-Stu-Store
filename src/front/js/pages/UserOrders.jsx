@@ -20,7 +20,6 @@ export const UserOrders = () => {
         const handleGetOrders = async () => {
             const user_id = localStorage.getItem('userID');
             const ordersData = await actions.getOrderPlaced(user_id);
-            console.log("esta es la data de orders", ordersData)
             setOrdersList(ordersData);
 
             const initialCheckboxStates = ordersData.map(() => ({
@@ -107,10 +106,8 @@ export const UserOrders = () => {
                 'positivo_o_negativo': 'POSITIVO',
                 'order_id': order.id,
             }
-            console.log('llegamos1')
             const response = await actions.sendRating(object)
             if (response == 'COMPLETED') {
-                console.log('llegamos2')
                 window.location.reload();
             }
         } else if (currentCheckboxState.valoracionNegativa) {
@@ -199,7 +196,7 @@ export const UserOrders = () => {
                                                                             <button className="btn btn-outline-dark w-100 mb-2" onClick={() => handlerDeleteOrder(order.id)}>Cancelar pedido</button>
                                                                         )}
                                                                         {!order.pagado && (
-                                                                            <PaymentComponent orderID={order.id} cost={order.precio_total} updatePageData={updatePageData} seller_id={order.vendedor_id} />
+                                                                            <PaymentComponent orderID={order.id} cost={order.precio_total} updatePageData={updatePageData} seller_id={order.vendedor_id} ofertas_ids={order.ofertas_ids} />
                                                                         )}
                                                                     </div>
                                                                 )}

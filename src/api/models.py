@@ -254,6 +254,7 @@ class Pedido(db.Model):
     pagado = db.Column(db.Boolean, default=False)
     valorado = db.Column(db.Boolean, default=False)
     haveShipping = db.Column(db.Boolean, default=False)
+    ofertas_ids = db.Column(db.ARRAY(db.Integer))
 
     user = db.relationship('User', foreign_keys=[
                            user_id], backref='pedidos_realizados')

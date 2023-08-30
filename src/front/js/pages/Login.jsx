@@ -36,8 +36,6 @@ export const Login = () => {
                 password: password,
             });
 
-            console.log("El usuario es Admin? :", userData);
-
             if (userData.is_admin) {
                 navigate("/admin-panel");
             } else {

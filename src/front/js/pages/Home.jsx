@@ -21,7 +21,6 @@ const Home = () => {
         const fetchData = async () => {
             const articles_response = await actions.getAllArticlesGroupedByGenre();
             setArticles(articles_response);
-            //console.log("articles: " + JSON.stringify(articles_response));
         };
 
         fetchData();
@@ -31,8 +30,6 @@ const Home = () => {
         const fetchData = async () => {
             const curiosities_response = await actions.getCuriosities();
             setCuriosities(curiosities_response);
-            console.log(curiosities_response)
-            //console.log("articles: " + JSON.stringify(articles_response));
         };
 
         fetchData();

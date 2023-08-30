@@ -17,7 +17,6 @@ export const UserViewOrderMessage = () => {
         const orderDataJson = sessionStorage.getItem('currentOrderData')
         const orderData = JSON.parse(orderDataJson)
         setOrderData(orderData)
-        console.log(orderData)
     }, [])
 
     const handleNavigateInbox = () => {
@@ -56,7 +55,6 @@ export const UserViewOrderMessage = () => {
             const updatedOrderData = { ...orderData };
             updatedOrderData.precio_envio = envio;
             updatedOrderData.haveShipping = true;
-            console.log('nueva order data', updatedOrderData);
             sessionStorage.setItem('currentOrderData', JSON.stringify(updatedOrderData));
             window.location.reload()
         }

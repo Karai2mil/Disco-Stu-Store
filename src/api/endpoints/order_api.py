@@ -18,6 +18,7 @@ def create_order():
 
         user_id = data.get('usuario_id')
         articles_ids = data.get('articles_ids', [])
+        ofertas_ids = data.get('ofertas_ids', [])
         precio_envio = data.get('precio_envio', 0)
         subtotal = data.get('subtotal', 0)
         condicion_funda = data.get('condicion_funda', '')
@@ -39,8 +40,10 @@ def create_order():
             condicion_soporte=condicion_soporte,
             user_id=user_id,
             vendedor_id=vendedor_id,
+            ofertas_ids=ofertas_ids,
             pagado=pagado,
         )
+        print(pedido)
         db.session.add(pedido)
         db.session.commit()
 
@@ -96,6 +99,7 @@ def get_pedidos_by_user_id(user_id):
                 'condicion_funda': pedido.condicion_funda,
                 'condicion_soporte': pedido.condicion_soporte,
                 'articulos': [],
+                'ofertas_ids': pedido.ofertas_ids,
                 'pagado': pedido.pagado,
                 'valorado': pedido.valorado,
                 'haveShipping': pedido.haveShipping

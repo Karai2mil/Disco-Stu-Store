@@ -84,7 +84,6 @@ const Article = ({ mode }) => {
         try {
             if (inputValue.length >= 2) {
                 const response = await actions.getAllArtistsLikeName(inputValue);
-                //console.log(JSON.stringify(response));
                 return response.map((artist) => ({
                     label: artist.nombre,
                     value: artist.id
@@ -100,8 +99,6 @@ const Article = ({ mode }) => {
     }
 
     const handleImageUpload = (event) => {
-        //console.log("handleImageUpload triggered");
-        //console.log(event.target.files[0]);
         imageFile = event.target.files[0];
         console.log("iamge file is loaded: " + imageFile);
     }
@@ -119,12 +116,10 @@ const Article = ({ mode }) => {
         values.genero = values.genero.value;
         values.artista_id = values.artista_id.value;
         values.user_id = localStorage.getItem('userID');
-        console.log("values: " + JSON.stringify(values));
 
         setTimeout(async () => {
             try {
                 const response_data = await actions.addArticleForApproval(values, imageFile);
-                console.log("values: " + JSON.stringify(values));
                 setIsSubmitting(false);
                 setSuccessNoti(true);
                 mode = null;

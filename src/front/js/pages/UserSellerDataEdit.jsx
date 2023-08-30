@@ -63,8 +63,6 @@ export const UserSellerDataEdit = () => {
         try {
             const responseMessage = await actions.editSeller(sellerData);
 
-            console.log(responseMessage);
-
             // Redirigir al usuario después de guardar los cambios
             navigate('/user-profile');
 

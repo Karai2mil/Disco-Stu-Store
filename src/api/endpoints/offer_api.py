@@ -2,8 +2,9 @@
 This module takes offere of starting the API Server for users, Loading the DB and Adding the endpoints
 """
 from flask import Flask, request, jsonify, url_for, Blueprint
-from api.models import db, User, Articulo, Ofertas
+from api.models import db, User, Articulo, Ofertas, Carrito
 from api.utils import generate_sitemap, APIException
+import traceback
 
 offer_api = Blueprint('offer_api', __name__)
 
@@ -20,7 +21,7 @@ def get_offers(article_id):
         article_dict = {
             'id': article.id,
             'usuario': vendedor.usuario,
-            'pais_vendedor': vendedor.pais_comprador,
+            'pais_comprador': vendedor.pais_comprador,
             'valoracion': vendedor.valoracion,
             'cantidad_de_valoraciones': vendedor.cantidad_de_valoraciones,
             'vendedor_id': article.vendedor_id,
@@ -92,16 +93,21 @@ def edit_offer(offer_id):
     else:
         return jsonify('Offer not found'), 404
     
-@offer_api.route('/delete/<int:offer_id>', methods=['DELETE'])
-def delete_offer(offer_id):
+@offer_api.route('/delete', methods=['DELETE'])
+def delete_offer():
+    try:
 
-    offer = Ofertas.query.filter_by(id=offer_id).first()
-
-    if offer:
-
-        db.session.delete(offer)
+        ofertas_ids = request.json.get('ofertas_ids')
+        for id in ofertas_ids:
+            offer = Ofertas.query.filter_by(id=id).first()
+            offers_in_cart = Carrito.query.filter_by(oferta_id=id).all()
+            for elem in offers_in_cart:
+                db.session.delete(elem)
+            if offer:
+                db.session.delete(offer)
         db.session.commit()
-
-        return jsonify('Offer deleted'), 200
-    else:
-        return jsonify('Offer not found'), 404
+        return jsonify('Offers deleted'), 200
+    except Exception as e:
+        traceback.print_exc()
+        db.session.rollback()
+        return jsonify({"error": str(e)}), 500

@@ -10,13 +10,13 @@ const Offers = () => {
     const { store, actions } = useContext(Context)
     const article = JSON.parse(localStorage.getItem('currentArticle'));
     const navigate = useNavigate()
+    const user_id = localStorage.getItem('userID');
 
     useEffect(() => {
         actions.getOffers(article.id)
     }, [])
 
     const addItemToCart = async (offer) => {
-        const user_id = localStorage.getItem('userID');
         const cart_element = {
             'user_id': user_id,
             'vendedor_id': offer.vendedor_id,
@@ -27,7 +27,6 @@ const Offers = () => {
             alert('El artículo ya existe en el carrito');
             navigate('/cart')
         } else if (fetchData == 'COMPLETED') {
-            console.log('Offer added:', fetchData);
             navigate('/cart')
         }
     }
@@ -67,14 +66,14 @@ const Offers = () => {
                 </div>
                 <div id='upper_content_buttons' className={styles.btnDiv}>
                     <div>
-                        <button onClick={() => {navigate(`/article/${article.id}`)}} type="button" className={`btn btn-dark ${styles.upperBtn}`}>Ver la pagina de la edición</button>
+                        <button onClick={() => { navigate(`/article/${article.id}`) }} type="button" className={`btn btn-dark ${styles.upperBtn}`}>Ver la pagina de la edición</button>
                         <button onClick={() => navigate(`/sell/${article.id}`)} type="button" className={`btn ${styles.upperBtn}`} style={{ backgroundColor: '#336494' }}>Vender este articulo</button>
                     </div>
                 </div>
             </div>
 
             <div id='offers'>
-                <table className={styles.table}  style={{marginBottom: '320px'}}>
+                <table className={styles.table} style={{ marginBottom: '320px' }}>
                     <thead className={styles.tableHead}>
                         <tr>
                             <th style={{ width: '40%', paddingLeft: '10px' }}>Articulo</th>
@@ -87,7 +86,7 @@ const Offers = () => {
                         {store.currentOffers.length > 0 ? (
                             store.currentOffers.map((offer, index) => {
                                 return (
-                                    <tr key={index} style={{marginBottom: '40px'}}>
+                                    <tr key={index} style={{ marginBottom: '40px' }}>
                                         <td style={{ width: '40%', paddingLeft: '10px' }}>
                                             <p style={{ marginBottom: '5px' }}><strong>{article.titulo}</strong></p>
                                             <div className={styles.properties}>
@@ -107,7 +106,7 @@ const Offers = () => {
                                             <p>{offer.valoracion}%, {offer.cantidad_de_valoraciones} valoraciones</p>
                                             <div className={styles.properties}>
                                                 <p className={styles.articleConditions}>Enviado desde:</p>
-                                                <p>{offer.pais_vendeor}</p>
+                                                <p>{offer.pais_comprador}</p>
                                             </div>
                                         </td>
                                         <td style={{ width: '18%', paddingLeft: '10px' }}>
@@ -117,9 +116,16 @@ const Offers = () => {
                                                 <p style={{ color: '#033BDB' }}>envío</p>
                                             </div>
                                         </td>
-                                        <td style={{ width: '16%', padding: '0px 20px 0px 10px' }}>
-                                            <button onClick={() => addItemToCart(offer)} type="button" className={`btn btn-success ${styles.cartBtn}`}>Añadir al carrito</button>
-                                        </td>
+                                        {(user_id != offer.vendedor_id) ? (
+                                            <td style={{ width: '16%', padding: '0px 20px 0px 10px' }}>
+                                                <button onClick={() => addItemToCart(offer)} type="button" className={`btn btn-success ${styles.cartBtn}`}>Añadir al carrito</button>
+                                            </td>
+                                        ) : (
+                                            <td style={{ width: '16%', padding: '0px 20px 0px 10px' }}>
+                                                <button type="button" className={`btn btn-secondary ${styles.cartBtn}`}>Añadir al carrito</button>
+                                            </td>
+                                        )
+                                        }
                                     </tr>
                                 );
                             })
