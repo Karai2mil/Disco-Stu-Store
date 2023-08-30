@@ -45,6 +45,7 @@ const SearchBar = () => {
 					aria-label="Search"
 					onInput={(e) => searchContent(e)}
 					onKeyDown={(e) => searchContent(e)}
+					onChange={() => {}}
 					value={term}
 				/>
 			</div>

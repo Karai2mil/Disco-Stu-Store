@@ -8,8 +8,8 @@ export const Footer = () => (
 			<footer className="container-fluid bg-black text-white">
 				<div className="d-flex p-3">
 					<p className="col-md-4 ms-3 mb-0 text-muted flex-fill fs-6 d-flex" style={{ color: 'white' }}>
-						<span className="fs-3 text-white">Disco Stu</span><p style={{ color: 'white', padding: '13px 0px 0px 5px' }}>© 2023 Company,
-						Inc</p>
+						<span className="fs-3 text-white">Disco Stu</span><span style={{ color: 'white', padding: '13px 0px 0px 5px' }}>© 2023 Company,
+						Inc</span>
 					</p>
 
 					<ul className="nav col-md-4 d-flex align-items-center justify-content-end mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">

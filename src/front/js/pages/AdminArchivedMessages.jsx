@@ -99,7 +99,7 @@ export const AdminArchivedMessages = () => {
                             <div className="d-flex align-items-center justify-content-between w-50 m-auto">
                                 <div className="nav-item me-3 me-lg-0">
                                     <Link to="/home-edition" className="nav-link text-white d-flex align-items-center">
-                                        <i class="fa-solid fa-pencil p-2"></i>
+                                        <i className="fa-solid fa-pencil p-2"></i>
                                         <p>Editar home</p>
                                     </Link>
                                 </div>
@@ -132,7 +132,7 @@ export const AdminArchivedMessages = () => {
                                         <p style={{ fontSize: '1.1rem' }}>Bandeja de entrada</p>
                                     </Link>
                                     <div className="d-flex justify-content-center">
-                                        <i class="fa-solid fa-caret-down" style={{ color: '#ffffff' }}></i>
+                                        <i className="fa-solid fa-caret-down" style={{ color: '#ffffff' }}></i>
                                     </div>
                                 </div>
                             </div>
