@@ -75,7 +75,7 @@ export const UserSellerDataEdit = () => {
     useEffect(() => {
         const paypalValidation = async () => {
             const user_id = localStorage.getItem('userID')
-            const backendUrl = process.env.BACKEND_URL + `api/users/validate_paypal_connection/${user_id}`;
+            const backendUrl = process.env.BACKEND_URL + `/api/users/validate_paypal_connection/${user_id}`;
             return await fetch(backendUrl, {
                 method: "GET",
                 headers: {

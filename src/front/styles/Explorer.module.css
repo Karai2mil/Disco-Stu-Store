@@ -13,6 +13,9 @@
 .generalDiv {
     display: flex;
 }
+p{
+    margin-bottom: 0;
+}
 .upperFilter{
     display: flex;
     list-style-type: none;

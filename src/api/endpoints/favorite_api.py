@@ -21,9 +21,6 @@ def favorites_by_user_id(user_id):
     try:
         user_favorites = Favoritos.query.filter_by(user_id=user_id).all()
 
-        if not user_favorites:
-            return jsonify({'message': 'User not found or no favorites'}), 404
-
         favorites_data = []
         for favorite in user_favorites:
             favorites_data.append({

@@ -64,7 +64,7 @@ const ArticleDetails = () => {
     }
 
     return (
-        <div className="container mt-3" style={{marginBottom: '145px'}}>
+        <div className="container mt-3" style={{marginBottom: '150px'}}>
             <div className="row">
                 <div className="col-md-3">
                     <img src={article.url_imagen} alt="{article.title}"

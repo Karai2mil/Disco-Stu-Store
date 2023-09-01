@@ -20,7 +20,7 @@ const PayPalDonation = () => {
     const createOrder = async (data) => {
         // Order is created on the server and the order id is returned
         const user_id = localStorage.getItem('userID')
-        const backendUrl = process.env.BACKEND_URL + 'api/payment/create-paypal-order';
+        const backendUrl = process.env.BACKEND_URL + '/api/payment/create-paypal-order';
         return await fetch(backendUrl, {
             method: "POST",
             headers: {
@@ -41,7 +41,7 @@ const PayPalDonation = () => {
     const onApprove = async (data) => {
         // Order is captured on the server and the response is returned to the browser
         const user_id = localStorage.getItem('userID')
-        const backendUrl = process.env.BACKEND_URL + `api/payment/capture-paypal-order`;
+        const backendUrl = process.env.BACKEND_URL + `/api/payment/capture-paypal-order`;
         return await fetch(backendUrl, {
             method: "POST",
             headers: {
@@ -60,8 +60,8 @@ const PayPalDonation = () => {
                 const becameSeller = async () => {
                     try{
                         // const token = localStorage.getItem('token');
-                        const backendUrl = process.env.BACKEND_URL + `api/users/became_seller/${user_id}`;
-                        return await fetch(backendUrl, {
+                        const backendSellerUrl = process.env.BACKEND_URL + `/api/users/became_seller/${user_id}`;
+                        return await fetch(backendSellerUrl, {
                             method: "PUT",
                             headers: {
                                 "Content-Type": "application/json",

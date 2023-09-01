@@ -37,13 +37,13 @@ def save_to_cloudinary(image_url, custom_public_id, isRelease):
         folder_path += "releases/"
     else:
         folder_path += "artists/"
-
+    print('esta es la url imagen que entregamos:', image_url)
     try:
         upload_result = cloudinary.uploader.upload(
             image_url,
             folder=folder_path,
             public_id=custom_public_id)
-
+        print(upload_result["secure_url"])
         return upload_result["secure_url"]
     except cloudinary.exceptions.Error as e:
         # Handle Cloudinary API errors
@@ -56,7 +56,9 @@ def save_to_cloudinary(image_url, custom_public_id, isRelease):
 
 
 def save_initial_data_from_discosg(data):
-    directory_name = "src/api/data"
+    directory_name = "data"
+    if not os.path.exists(directory_name):
+        os.makedirs(directory_name)
     file_name = "data_inicial.json"
     folder_path = os.path.join(os.getcwd(), directory_name)
     file_path = os.path.join(folder_path, file_name)
@@ -67,7 +69,7 @@ def save_initial_data_from_discosg(data):
 
 @utils_api.route('/execute_initial_data', methods=['GET'])
 def load_initial_file():
-    filename = os.getcwd() + "/src/api/data/data_inicial.json"
+    filename = "api/data/data_inicial.json"
     final_releases = None
 
     print("inicializando inserciones...")
@@ -93,23 +95,23 @@ def load_initial_file():
             tracks = [Tracks(articulo=articulo, **track_data)
                       for track_data in tracklist_data]
             articulo.tracks = tracks
+            if artista.url_imagen and articulo.url_imagen:
+                try:
+                    articulo.url_imagen = save_to_cloudinary(
+                        articulo.url_imagen, articulo.id, True)
 
-            try:
-                articulo.url_imagen = save_to_cloudinary(
-                    articulo.url_imagen, articulo.id, True)
+                    existing_artista = db.session.query(
+                        Artista).filter_by(id=artista.id).first()
+                    if not existing_artista:
+                        session.add(artista)
+                        artista.url_imagen = save_to_cloudinary(
+                            artista.url_imagen, artista.id, False)
+                        articulo.artista_id = artista.id
+                except Exception as e:
+                    return jsonify({'message': e})
 
-                existing_artista = db.session.query(
-                    Artista).filter_by(id=artista.id).first()
-                if not existing_artista:
-                    session.add(artista)
-                    artista.url_imagen = save_to_cloudinary(
-                        artista.url_imagen, artista.id, False)
-                    articulo.artista_id = artista.id
-            except Exception as e:
-                return jsonify({'message': e})
-
-            session.add(articulo)
-            session.add_all(tracks)
+                session.add(articulo)
+                session.add_all(tracks)
 
         session.commit()
 
@@ -151,10 +153,12 @@ def load_initial_file():
         traceback.print_exc()
         session.rollback()
         print(f"Transaction failed: {e}")
+        return jsonify({'message': 'Error occurred while loading initial data'}), 500
     finally:
         session.close()
 
     return jsonify(final_releases), 200
+
 
 
 """
@@ -165,7 +169,7 @@ Ejecutar solo cuando no exista el archivo JSON inicial para generarlo
 @utils_api.route('/load_initial_realeases', methods=['GET'])
 def load_initial_realeases():
     GENRES = ['electronic', 'rock', 'jazz', 'blues', 'pop']
-    RECORDS_NUMBER = 20
+    RECORDS_NUMBER = 50
     final_realases = []
 
     print("Empezando extracción de datos de discosg...")

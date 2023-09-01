@@ -8,7 +8,7 @@ const PaymentComponent = ({ orderID, cost, updatePageData, seller_id, ofertas_id
 
     const createOrder = async (data) => {
         // Order is created on the server and the order id is returned
-        const backendUrl = process.env.BACKEND_URL + `api/payment/create-paypal-order`;
+        const backendUrl = process.env.BACKEND_URL + `/api/payment/create-paypal-order`;
         return await fetch(backendUrl, {
             method: "POST",
             headers: {
@@ -30,7 +30,7 @@ const PaymentComponent = ({ orderID, cost, updatePageData, seller_id, ofertas_id
     const onApprove = async (data) => {
         try {
             const user_id = localStorage.getItem('userID');
-            const backendUrl = process.env.BACKEND_URL + `api/payment/capture-paypal-order`;
+            const backendUrl = process.env.BACKEND_URL + `/api/payment/capture-paypal-order`;
 
             const response = await fetch(backendUrl, {
                 method: "POST",

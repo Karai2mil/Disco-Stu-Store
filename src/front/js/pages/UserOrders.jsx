@@ -189,7 +189,7 @@ export const UserOrders = () => {
                                                             </td>
                                                             <td>
                                                                 {(order.haveShipping === false) ? (
-                                                                    <p>Contacta al vendedor para establecer precio de envío</p>
+                                                                    <p>Contacta al vendedor para establecer precio de envío, o <span onClick={() => handlerDeleteOrder(order.id)} style={{color: '#0000ee', cursor: 'pointer'}}>cancele su pedido.</span></p>
                                                                 ) : (
                                                                     <div>
                                                                         {!order.pagado && (

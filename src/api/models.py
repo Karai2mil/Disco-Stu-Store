@@ -13,7 +13,7 @@ db = SQLAlchemy()
 
 #     def serialize(self):
 #         return {
-#             "id": self.id,
+#             "id": self.id,a
 #             "email": self.email,
 #             # do not serialize the password, its a security breach
 #         }

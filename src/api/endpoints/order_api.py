@@ -85,8 +85,6 @@ def create_order():
 def get_pedidos_by_user_id(user_id):
     try:
         pedidos = Pedido.query.filter_by(user_id=user_id).all()
-        if not pedidos:
-            return jsonify({'message': 'No se encontraron pedidos para este usuario'}), 404
 
         pedidos_list = []
         for pedido in pedidos:

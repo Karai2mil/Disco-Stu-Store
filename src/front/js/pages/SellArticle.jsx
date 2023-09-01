@@ -67,7 +67,7 @@ const SellArticle = () => {
     useEffect(() => {
         const sellerValidation = async () => {
             const user_id = localStorage.getItem('userID')
-            const backendUrl = process.env.BACKEND_URL + `api/users/validate_seller/${user_id}`;
+            const backendUrl = process.env.BACKEND_URL + `/api/users/validate_seller/${user_id}`;
             return await fetch(backendUrl, {
                 method: "GET",
                 headers: {

@@ -14,9 +14,9 @@ const Cart = () => {
     }, []);
 
     return (
-        <div className='container' style={{marginBottom: '132px'}}>
+        <div className='container'>
 
-            <div className='row'>
+            <div className='row' style={{ marginBottom: store.cart.length > 0 ? '300px' : '132px' }}>
                 <div className='col-md-12 mt-4' style={{ marginLeft: '30px' }}>
                     <h5 style={{ margin: 0 }}><strong>Tienes {numOffers} aticulos de {store.cart.length} vendedores</strong></h5>
                 </div>

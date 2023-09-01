@@ -11,7 +11,7 @@ const Explorer = () => {
     const { store, actions } = useContext(Context);
     const [filter, setFilter] = useState(null);
     const navigate = useNavigate();
-    const backendUrl = process.env.BACKEND_URL + "api/articles";
+    const backendUrl = process.env.BACKEND_URL + "/api/articles";
     const [generos, setGeneros] = useState(null);
     const [estilos, setEstilos] = useState(null);
     const [paises, setPaises] = useState(null);
@@ -138,10 +138,9 @@ const Explorer = () => {
                             articles.map((element, index) => {
                                 const [artist, title] = element.titulo.split(' - ')
                                 return (
-                                    <li key={index}>
+                                    <li key={element.id}>
                                         <div onClick={() => { navigate(`/article/${element.id}`); localStorage.setItem('currentArticle', JSON.stringify(element)); }} style={{ cursor: 'pointer' }}>
                                             <ArticleCard
-                                                key={index}
                                                 title={title}
                                                 artist={artist}
                                                 url_imagen={element.url_imagen}

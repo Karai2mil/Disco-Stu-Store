@@ -314,10 +314,8 @@ def validate_seller(user_id):
 def validate_paypal_connection(user_id):
 
     user = User.query.get(user_id)
-
     cliente_ID_paypal = user.cliente_ID_paypal
     secret_key_paypal = user.secret_key_paypal
-
     if cliente_ID_paypal and secret_key_paypal:
         return jsonify({'status': 'CONNECTED', 'cliente_ID_paypal': cliente_ID_paypal, 'secret_key_paypal': secret_key_paypal}), 200
     else:

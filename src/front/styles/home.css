@@ -308,6 +308,9 @@
   margin-top: auto;
   margin-right: auto;
 }
+p{
+  margin-bottom: 0;
+}
 
 .column-container {
   column-count: 3;

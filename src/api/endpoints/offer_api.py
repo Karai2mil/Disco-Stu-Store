@@ -9,31 +9,52 @@ import traceback
 offer_api = Blueprint('offer_api', __name__)
 
 @offer_api.route('/<int:article_id>', methods=['GET'])
-def get_offers(article_id):
+def get_offer_by_article(article_id):
 
-    articles = Ofertas.query.filter_by(articulo_id=article_id).all()
+    ofertas = Ofertas.query.filter_by(articulo_id=article_id).all()
 
-    articles_response = []
+    ofertas_response = []
 
-    for article in articles:
-        vendedor_id = article.vendedor_id
+    for oferta in ofertas:
+        vendedor_id = oferta.vendedor_id
         vendedor = User.query.filter_by(id=vendedor_id).first()
         article_dict = {
-            'id': article.id,
+            'id': oferta.id,
             'usuario': vendedor.usuario,
             'pais_comprador': vendedor.pais_comprador,
             'valoracion': vendedor.valoracion,
             'cantidad_de_valoraciones': vendedor.cantidad_de_valoraciones,
-            'vendedor_id': article.vendedor_id,
-            'articulo_id': article.articulo_id,
-            'condicion_funda': article.condicion_funda,
-            'condicion_soporte': article.condicion_soporte,
-            'precio': article.precio,
-            'comentario': article.comentario
+            'vendedor_id': oferta.vendedor_id,
+            'articulo_id': oferta.articulo_id,
+            'condicion_funda': oferta.condicion_funda,
+            'condicion_soporte': oferta.condicion_soporte,
+            'precio': oferta.precio,
+            'comentario': oferta.comentario
         }
-        articles_response.append(article_dict)
+        ofertas_response.append(article_dict)
 
-    return jsonify(articles_response), 200
+    return jsonify(ofertas_response), 200
+
+@offer_api.route('/seller/<int:vendedor_id>', methods=['GET'])
+def get_offer_by_seller(vendedor_id):
+
+    ofertas = Ofertas.query.filter_by(vendedor_id=vendedor_id).all()
+
+    ofertas_response = []
+
+    for oferta in ofertas:
+        articulo_id = oferta.articulo_id
+        articulo = Articulo.query.filter_by(id=articulo_id).first()
+        oferta_dict = {
+            'id': oferta.id,
+            'titulo': articulo.titulo,
+            'condicion_funda': oferta.condicion_funda,
+            'condicion_soporte': oferta.condicion_soporte,
+            'precio': oferta.precio,
+        }
+        ofertas_response.append(oferta_dict)
+
+    return jsonify(ofertas_response), 200
 
 @offer_api.route('/post', methods=['POST'])
 def post_offer():
@@ -106,7 +127,7 @@ def delete_offer():
             if offer:
                 db.session.delete(offer)
         db.session.commit()
-        return jsonify('Offers deleted'), 200
+        return jsonify('COMPLETED'), 200
     except Exception as e:
         traceback.print_exc()
         db.session.rollback()

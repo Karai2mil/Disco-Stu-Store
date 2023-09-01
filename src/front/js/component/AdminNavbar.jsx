@@ -51,7 +51,7 @@ export const AdminNavbar = () => {
                         <li
                             onClick={() => handlerNavigateToExplorer()}
                             style={{
-                                padding: '9px 0px 0px 18px',
+                                padding: '0px 0px 0px 18px',
                                 margin: 0,
                                 cursor: 'pointer'
                             }}>

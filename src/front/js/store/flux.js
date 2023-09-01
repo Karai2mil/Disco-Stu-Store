@@ -17,7 +17,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 		actions: {
 			registerNewUser: async (newUser) => {
 				try {
-					const backendUrl = process.env.BACKEND_URL + "api/users/signup";
+					const backendUrl = process.env.BACKEND_URL + "/api/users/signup";
 					const response = await fetch(backendUrl, {
 						method: "POST",
 						body: JSON.stringify(newUser),
@@ -41,7 +41,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 			login: async ({ username_or_email, password }) => {
 				try {
-					const backendUrl = process.env.BACKEND_URL + "api/users/login";
+					const backendUrl = process.env.BACKEND_URL + "/api/users/login";
 					const response = await fetch(backendUrl, {
 						method: 'POST',
 						body: JSON.stringify({ username_or_email, password }),
@@ -90,7 +90,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			changePassword: async ({ currentPassword, newPassword }) => {
 				try {
 					const token = localStorage.getItem('token');
-					const backendUrl = process.env.BACKEND_URL + "api/users/update-password";
+					const backendUrl = process.env.BACKEND_URL + "/api/users/update-password";
 					const response = await fetch(backendUrl, {
 						method: 'POST',
 						body: JSON.stringify({ old_password: currentPassword, new_password: newPassword }),
@@ -118,7 +118,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			getUserById: async (userId) => {
 				try {
 					const token = localStorage.getItem('token');
-					const backendUrl = process.env.BACKEND_URL + `api/users/profile/${userId}`;
+					const backendUrl = process.env.BACKEND_URL + `/api/users/profile/${userId}`;
 					const response = await fetch(backendUrl, {
 						method: 'GET',
 						headers: {
@@ -134,7 +134,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 			editUser: async (userId, userData) => {
 				const token = localStorage.getItem('token');
-				const backendUrl = process.env.BACKEND_URL + "api/users/edit_user/";
+				const backendUrl = process.env.BACKEND_URL + "/api/users/edit_user/";
 
 				try {
 					const response = await fetch(`${backendUrl}${userId}`, {
@@ -157,7 +157,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			},
 
 			getAllUsersInfo: async () => {
-				const backendUrl = process.env.BACKEND_URL + "api/users/all_users";
+				const backendUrl = process.env.BACKEND_URL + "/api/users/all_users";
 				const response = await fetch(backendUrl, {
 					method: "GET",
 					headers: {
@@ -180,7 +180,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 			deleteUser: async (userId) => {
 				try {
-					const backendUrl = process.env.BACKEND_URL + "api/users/delete_user/";
+					const backendUrl = process.env.BACKEND_URL + "/api/users/delete_user/";
 					const response = await fetch(`${backendUrl}${userId}`, {
 						method: 'DELETE',
 					});
@@ -215,7 +215,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 			sendMessage: async (senderID, message_data) => {
 				try {
-					const backendUrl = process.env.BACKEND_URL + "api/inbox_user/messages/sent/" + senderID;
+					const backendUrl = process.env.BACKEND_URL + "/api/inbox_user/messages/sent/" + senderID;
 					const response = await fetch(backendUrl, {
 						method: 'POST',
 						body: JSON.stringify(message_data),
@@ -235,7 +235,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 			deleteMessage: async (selectedItems) => {
 				try {
-					const backendUrl = process.env.BACKEND_URL + "api/inbox_user/messages/trash";
+					const backendUrl = process.env.BACKEND_URL + "/api/inbox_user/messages/trash";
 						const response = await fetch(backendUrl, {
 							method: 'POST',
 							body: JSON.stringify({ message_ids: selectedItems }),
@@ -256,7 +256,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 			recoverDeletedMessages: async (selectedItems) => {
 				try {
-					const backendUrl = process.env.BACKEND_URL + "api/inbox_user/messages";
+					const backendUrl = process.env.BACKEND_URL + "/api/inbox_user/messages";
 						const response = await fetch(backendUrl, {
 							method: 'POST',
 							body: JSON.stringify({ message_ids: selectedItems }),
@@ -277,7 +277,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 			deleteSentMessages: async (selectedItems) => {
 				try {
-					const backendUrl = process.env.BACKEND_URL + "api/inbox_user/messages/sent";
+					const backendUrl = process.env.BACKEND_URL + "/api/inbox_user/messages/sent";
 						const response = await fetch(backendUrl, {
 							method: 'DELETE',
 							body: JSON.stringify({ message_ids: selectedItems }),
@@ -298,7 +298,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 			deleteTrashMessages: async (selectedItems) => {
 				try {
-					const backendUrl = process.env.BACKEND_URL + "api/inbox_user/messages/trash";
+					const backendUrl = process.env.BACKEND_URL + "/api/inbox_user/messages/trash";
 						const response = await fetch(backendUrl, {
 							method: 'DELETE',
 							body: JSON.stringify({ message_ids: selectedItems }),
@@ -318,7 +318,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			},
 
 			createArtist: async (artist) => {
-				const backendUrl = process.env.BACKEND_URL + "api/artists/create";
+				const backendUrl = process.env.BACKEND_URL + "/api/artists/create";
 				const response = await fetch(backendUrl, {
 					method: "POST",
 					headers: {
@@ -340,7 +340,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			},
 
 			getAllArticles: async () => {
-				const backendUrl = process.env.BACKEND_URL + "api/articles/";
+				const backendUrl = process.env.BACKEND_URL + "/api/articles/";
 				const response = await fetch(backendUrl, {
 					method: "GET",
 					headers: {
@@ -364,7 +364,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				return data;
 			},
 			getAllArticlesGroupedByGenre: async () => {
-				const backendUrl = process.env.BACKEND_URL + "api/articles/get_all_grouped_by_genre/";
+				const backendUrl = process.env.BACKEND_URL + "/api/articles/get_all_grouped_by_genre/";
 				const response = await fetch(backendUrl, {
 					method: "GET",
 					headers: {
@@ -385,7 +385,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			},
 
 			getAllArticlesByGenre: async (genre) => {
-				const backendUrl = process.env.BACKEND_URL + "api/articles/genre/" + genre;
+				const backendUrl = process.env.BACKEND_URL + "/api/articles/genre/" + genre;
 				const response = await fetch(backendUrl, {
 					method: "GET",
 					headers: {
@@ -405,7 +405,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				return data;
 			},
 			addArticleForApproval: async (article, file) => {
-				const backendUrl = process.env.BACKEND_URL + "api/approvals/add";
+				const backendUrl = process.env.BACKEND_URL + "/api/approvals/add";
 
 				const formData = new FormData();
 				formData.append("article", JSON.stringify(article));
@@ -420,7 +420,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				return response;
 			},
 			rejectArticle: async (article) => {
-				const backendUrl = process.env.BACKEND_URL + "api/approvals/reject";
+				const backendUrl = process.env.BACKEND_URL + "/api/approvals/reject";
 				const response = await fetch(backendUrl, {
 					method: "PUT",
 					headers: {
@@ -440,7 +440,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 
 			getArticleForApproval: async () => {
-				const backendUrl = process.env.BACKEND_URL + "api/approvals/";
+				const backendUrl = process.env.BACKEND_URL + "/api/approvals/";
 				const response = await fetch(backendUrl, {
 					method: "GET",
 					headers: {
@@ -460,7 +460,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				return data;
 			},
 			addApprovedArticle: async (newArticle) => {
-				const backendUrl = process.env.BACKEND_URL + "api/articles/add";
+				const backendUrl = process.env.BACKEND_URL + "/api/articles/add";
 				const response = await fetch(backendUrl, {
 					method: "POST",
 					headers: {
@@ -480,7 +480,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 			deleteApprovedArticle: async (newArticle) => {
 				try {
-					const backendUrl = process.env.BACKEND_URL + "api/approvals/";
+					const backendUrl = process.env.BACKEND_URL + "/api/approvals/";
 					const response = await fetch(backendUrl, {
 						method: "DELETE",
 						headers: {
@@ -502,7 +502,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 
 			getAllArtists: async () => {
-				const backendUrl = process.env.BACKEND_URL + "api/artists/";
+				const backendUrl = process.env.BACKEND_URL + "/api/artists/";
 				const response = await fetch(backendUrl, {
 					method: "GET",
 					headers: {
@@ -522,7 +522,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				return data;
 			},
 			getAllArtistsLikeName: async (inputValue) => {
-				const backendUrl = process.env.BACKEND_URL + "api/artists/" + inputValue;
+				const backendUrl = process.env.BACKEND_URL + "/api/artists/" + inputValue;
 				const response = await fetch(backendUrl, {
 					method: "GET",
 					headers: {
@@ -543,7 +543,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			},
 			expandedSearch: async (searchContent) => {
 				try {
-					const backendUrl = process.env.BACKEND_URL + "api/searchbar/search/" + searchContent;
+					const backendUrl = process.env.BACKEND_URL + "/api/searchbar/search/" + searchContent;
 					const response = await fetch(backendUrl)
 					if (!response.ok)
 						throw new Error("Error on searching response");
@@ -563,7 +563,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			},
 			search: async (term) => {
 				try {
-					const backendUrl = process.env.BACKEND_URL + "api/articles/search/" + (term ? term : "");
+					const backendUrl = process.env.BACKEND_URL + "/api/articles/search/" + (term ? term : "");
 					const response = await fetch(backendUrl, {
 						method: 'GET',
 						headers: {
@@ -582,7 +582,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 			},
 			getGenres: async () => {
-				const backendUrl = process.env.BACKEND_URL + "api/articles/genres/";
+				const backendUrl = process.env.BACKEND_URL + "/api/articles/genres/";
 				const response = await fetch(backendUrl, {
 					method: "GET",
 					headers: {
@@ -658,6 +658,20 @@ const getState = ({ getStore, getActions, setStore }) => {
 					const data = await response.json()
 					const store = getStore()
 					setStore({ ...store, currentOffers: data })
+				} catch (error) {
+					console.log('Error getting offers:', error)
+				}
+			},
+
+			getUserOffers: async (user_id) => {
+				try {
+					const backendUrl = process.env.BACKEND_URL + `/api/offers/seller/${user_id}`;
+					const response = await fetch(backendUrl)
+					if (!response.ok) {
+						throw new Error('Error on getting offers response')
+					}
+					const data = await response.json()
+					return data
 				} catch (error) {
 					console.log('Error getting offers:', error)
 				}
@@ -919,14 +933,12 @@ const getState = ({ getStore, getActions, setStore }) => {
 							'Content-Type': 'application/json',
 						},
 					});
-
 					if (!response.ok) {
 						throw new Error('Unable to get orders information.');
 					}
-
 					const data = await response.json();
-					const orders = data.pedidos;
 
+					const orders = data.pedidos;
 					return orders;
 
 				} catch (error) {
@@ -1057,7 +1069,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			},
 
 			addCuriositie: async (formData) => {
-				const backendUrl = process.env.BACKEND_URL + "api/home/edit";
+				const backendUrl = process.env.BACKEND_URL + "/api/home/edit";
 				const response = await fetch(backendUrl, {
 					method: "PUT",
 					body: formData
@@ -1130,6 +1142,9 @@ const getState = ({ getStore, getActions, setStore }) => {
 					if (!response.ok) {
 						throw new Error('Failed to delete offer');
 					}
+
+					const data = await response.json()
+					return data
 				} catch (error) {
 					console.error('Error deleting offer', error);
 					throw error;
