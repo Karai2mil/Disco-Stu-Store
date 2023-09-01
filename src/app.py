@@ -79,7 +79,7 @@ MIGRATE = Migrate(app, db, compare_type=True)
 
 
 # Allow CORS requests to this API
-CORS(app)
+CORS(app, resources={r"/*": {"origins": "*"}}, supports_credentials=True)
 
 # add the admin
 setup_admin(app)
@@ -136,5 +136,4 @@ def serve_any_other_file(path):
 
 # this only runs if `$ python src/main.py` is executed
 if __name__ == '__main__':
-    PORT = int(os.environ.get('PORT', 3001))
-    app.run(host='0.0.0.0', port=PORT, debug=True)
+        app.run(debug=True, host='0.0.0.0', port=5000)
