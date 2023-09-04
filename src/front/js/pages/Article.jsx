@@ -1,5 +1,6 @@
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { Context } from "../store/appContext";
 import * as Yup from 'yup';
@@ -9,6 +10,7 @@ import Swal from 'sweetalert2';
 
 const Article = ({ mode }) => {
     const { actions, store } = useContext(Context);
+    const navigate = useNavigate()
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [genres, setGenres] = useState([]);
     //const article = mode ? localStorage.getItem('currentArticle') : null;}

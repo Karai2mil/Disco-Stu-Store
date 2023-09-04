@@ -322,15 +322,6 @@ const Home = () => {
                     (<img style={{width: '400px'}} src={logoVendedorBlanco} alt="" />) :
                     (<img style={{width: '400px'}} src={logoFondoBlanco} alt="" />)
                 }
-                {/* <p>Disco Stu Store es un entorno online para compra, venta y publicación de artículos de
-                    registros musicales fisicos como vinilos, casetes y cd’s. Brindamos
-                    un servicio de intercambio entre compradores y vendedores para
-                    coordinar la entrega de los paquetes a cualquier parte del mundo,
-                    facilitando el acceso a distintos artículos para personas que no
-                    tengan la posibilidad de obtenerlos localmente. Las
-                    características de la página buscan generar una comunidad de intercambio
-                    musical, con usuarios habilitados a agregar nuevos artículos y a
-                    editar los artículos existentes para una mejor experiencia. </p> */}
                 <div className="d-flex w-100 justify-content-between">
                     <button onClick={() => handlerNavigateToAbout()} type="button" className="btn btn-dark" style={{ marginLeft: '80px', width: '240px' }}>Sobre nosotros</button>
                     <button onClick={() => handlerNavigateToBecameSeller()} type="button" className="btn btn-dark" style={{ marginRight: '80px', width: '240px' }}>Convertirme en vendedor</button>
