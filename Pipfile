@@ -24,7 +24,7 @@ flask-mail = "*"
 werkzeug = "==2.2.3"
 importlib_metadata = "==6.7.0"
 zipp = "==3.15.0"
-importlib_resources = "==6.0.1"
+importlib_resources = "*"
 
 [requires]
 python_version = "3.11.4"
