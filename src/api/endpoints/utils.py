@@ -82,6 +82,7 @@ def load_initial_file():
     try:
         session.begin()
         for release_item in final_releases:
+            time.sleep(2)
             articulo_data = release_item["release"]
             artista_data = release_item.get("artist", None)
             tracklist_data = release_item["tracklist"]
