@@ -60,6 +60,21 @@ def delete_image_by_url(image_url):
 def get_home():
 
     db_curiosidades = Curiosidades_home.query.order_by(asc(Curiosidades_home.posicion)).all()
+    if not db_curiosidades:
+        db_curiosidades_empty = []
+        curiosidades = []
+        for curiosidad in db_curiosidades_empty:
+            curiosidades_dict = {
+                'posicion': curiosidad.posicion,
+                'titulo': curiosidad.titulo,
+                'subtitulo': curiosidad.subtitulo,
+                'descripcion': curiosidad.descripcion,
+                'url_imagen': curiosidad.url_imagen
+            }
+            curiosidades.append(curiosidades_dict)
+
+        return jsonify(curiosidades), 200
+    
     curiosidades = []
     for curiosidad in db_curiosidades:
         curiosidades_dict = {

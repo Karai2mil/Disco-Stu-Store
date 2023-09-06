@@ -69,7 +69,7 @@ def save_initial_data_from_discosg(data):
 
 @utils_api.route('/execute_initial_data', methods=['GET'])
 def load_initial_file():
-    filename = "api/data/data_inicial.json"
+    filename = "src/api/data/data_inicial.json"
     final_releases = None
 
     print("inicializando inserciones...")
