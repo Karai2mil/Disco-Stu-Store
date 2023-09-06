@@ -77,6 +77,14 @@ export const AdminNavbar = () => {
                                         className="dropdown-menu dropdown-menu-end dropdown-menu-dark bg-black"
                                         aria-labelledby="navbarScrollingDropdown"
                                     >
+                                         <div className="nav-item me-3 me-lg-0">
+                                            <Link to="/admin-panel" className="nav-link text-white">
+                                                <div className="d-flex align-items-center">
+                                                    <i style={{ margin: '0px 10px 0px 10px', color: 'white' }} className="fa-solid fa-display"></i>
+                                                    <p className="ml-2">Panel</p>
+                                                </div>
+                                            </Link>
+                                        </div>
                                         <button
                                             onClick={handleLogoutClick}
                                             className="dropdown-item"

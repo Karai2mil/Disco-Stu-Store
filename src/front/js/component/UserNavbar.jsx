@@ -103,7 +103,6 @@ export const UserNavbar = () => {
                                                     <p className="ml-2">Perfil</p>
                                                 </div>
                                             </Link>
-
                                         </div>
                                         <div className="nav-item me-3 me-lg-0">
                                             <Link to="/admin-support" className="nav-link text-white">
