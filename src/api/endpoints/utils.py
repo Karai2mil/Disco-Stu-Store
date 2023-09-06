@@ -169,16 +169,16 @@ Ejecutar solo cuando no exista el archivo JSON inicial para generarlo
 @utils_api.route('/load_initial_realeases', methods=['GET'])
 def load_initial_realeases():
     GENRES = ['electronic', 'rock', 'jazz', 'blues', 'pop']
-    RECORDS_NUMBER = 50
+    RECORDS_NUMBER = 20
     final_realases = []
 
     print("Empezando extracción de datos de discosg...")
 
     for genre in GENRES:
-        url = f"https://api.discogs.com/database/search?genre={genre}&type=master&key=RXfBUdaMFaqAXOnguGZG&secret=mVbHxlSJOTEIiUJYPsFXSynoEpmtPHqB&per_page={RECORDS_NUMBER}&page=1"
-
+        url = f"https://api.discogs.com/database/search?genre={genre}&type=master&key=reNoslojmDphrdPTiKQx&secret=SilbGLucXwjNzZrzffvdFtyrdaVZXUlE&per_page={RECORDS_NUMBER}&page=1"
         response_release = requests.get(url)
         data_general = response_release.json()
+        print("Data General:", data_general)
         data_release = data_general["results"]
         # print("data_release: " + str(data_release))
 
@@ -210,7 +210,7 @@ def load_initial_realeases():
 
             # SE OBTIENE INFORMACIÓN MASTER DEL RELEASE
             url_master = release["master_url"] + \
-                "?key=RXfBUdaMFaqAXOnguGZG&secret=mVbHxlSJOTEIiUJYPsFXSynoEpmtPHqB"
+                "?key=reNoslojmDphrdPTiKQx&secret=SilbGLucXwjNzZrzffvdFtyrdaVZXUlE"
             response_master = requests.get(url_master)
             data_master = response_master.json()
             # print("data_master: " + str(data_master))
@@ -231,7 +231,7 @@ def load_initial_realeases():
             if artist is not None:
                 if artist and artist[0]["resource_url"]:
                     url_artist = artist[0]["resource_url"] + \
-                        "?key=RXfBUdaMFaqAXOnguGZG&secret=mVbHxlSJOTEIiUJYPsFXSynoEpmtPHqB"
+                        "?key=reNoslojmDphrdPTiKQx&secret=SilbGLucXwjNzZrzffvdFtyrdaVZXUlE"
                     response_artist = requests.get(url_artist)
                     data_artist = response_artist.json()
                     # print("data_artist: " + str(data_artist));
