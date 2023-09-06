@@ -81,7 +81,7 @@ def load_initial_file():
 
     try:
         session.begin()
-        batch_size = 10  # Tamaño del lote
+        batch_size = 5  # Tamaño del lote
         num_batches = len(final_releases) // batch_size
 
         for i in range(num_batches):
