@@ -81,40 +81,46 @@ def load_initial_file():
 
     try:
         session.begin()
-        for release_item in final_releases:
-            time.sleep(5)
-            articulo_data = release_item["release"]
-            artista_data = release_item.get("artist", None)
-            tracklist_data = release_item["tracklist"]
+        batch_size = 10  # Tamaño del lote
+        num_batches = len(final_releases) // batch_size
 
-            articulo = Articulo(**articulo_data)
-            artista = None
+        for i in range(num_batches):
+            batch = final_releases[i * batch_size:(i + 1) * batch_size]
 
-            if artista_data is not None:
-                artista = Artista(**artista_data)
+            for release_item in batch:
+                time.sleep(5)
+                articulo_data = release_item["release"]
+                artista_data = release_item.get("artist", None)
+                tracklist_data = release_item["tracklist"]
 
-            tracks = [Tracks(articulo=articulo, **track_data)
-                      for track_data in tracklist_data]
-            articulo.tracks = tracks
-            if artista.url_imagen and articulo.url_imagen:
-                try:
-                    articulo.url_imagen = save_to_cloudinary(
-                        articulo.url_imagen, articulo.id, True)
+                articulo = Articulo(**articulo_data)
+                artista = None
 
-                    existing_artista = db.session.query(
-                        Artista).filter_by(id=artista.id).first()
-                    if not existing_artista:
-                        session.add(artista)
-                        artista.url_imagen = save_to_cloudinary(
-                            artista.url_imagen, artista.id, False)
-                        articulo.artista_id = artista.id
-                except Exception as e:
-                    return jsonify({'message': e})
+                if artista_data is not None:
+                    artista = Artista(**artista_data)
+
+                tracks = [Tracks(articulo=articulo, **track_data)
+                          for track_data in tracklist_data]
+                articulo.tracks = tracks
+                if artista.url_imagen and articulo.url_imagen:
+                    try:
+                        articulo.url_imagen = save_to_cloudinary(
+                            articulo.url_imagen, articulo.id, True)
+
+                        existing_artista = db.session.query(
+                            Artista).filter_by(id=artista.id).first()
+                        if not existing_artista:
+                            session.add(artista)
+                            artista.url_imagen = save_to_cloudinary(
+                                artista.url_imagen, artista.id, False)
+                            articulo.artista_id = artista.id
+                    except Exception as e:
+                        return jsonify({'message': e})
 
                 session.add(articulo)
                 session.add_all(tracks)
 
-        session.commit()
+            session.commit()
 
         hashed_pass_admin = generate_password_hash("Admin123!")
         hashed_pass_user = generate_password_hash("User123!")
@@ -148,7 +154,7 @@ def load_initial_file():
         session.commit()
 
         print("Curiosities are created...")
-        print("inserción de datos e imagenes terminada")
+        print("inserción de datos e imágenes terminada")
     except Exception as e:
         error_message = str(e)
         traceback.print_exc()
