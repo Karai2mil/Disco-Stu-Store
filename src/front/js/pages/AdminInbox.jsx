@@ -77,7 +77,7 @@ export const AdminInbox = () => {
     }
 
     return (
-        <div className="container-flui">
+        <div className="container-flui" style={{ marginBottom: '189px' }}>
             {/* Encabezado */}
             <div className="container-fluid p-0 m-0">
                 <div className="card border-0 rounded-0">

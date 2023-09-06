@@ -135,9 +135,9 @@ def serve_any_other_file(path):
 
 
 # # this only runs if `$ python src/main.py` is executed
-if __name__ == '__main__':
-        app.run(debug=True, host='0.0.0.0', port=5000)
+# if __name__ == '__main__':
+#         app.run(debug=True, host='0.0.0.0', port=5000)
 # this only runs if `$ python src/app.py` is executed
-# if __name__ == "__main__":
-#     PORT = int(os.environ.get("PORT", 3000))
-#     app.run(host="0.0.0.0", port=PORT, debug=False)
+if __name__ == "__main__":
+    PORT = int(os.environ.get("PORT", 3002))
+    app.run(host="0.0.0.0", port=PORT, debug=False)
