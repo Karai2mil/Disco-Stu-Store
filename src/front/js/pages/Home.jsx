@@ -175,10 +175,11 @@ const Home = () => {
                                 <div
                                     key={i + albumIndex}
                                     className="mr-3 album-item"
+                                    style={{cursor: 'pointer'}}
                                     onClick={() => {
                                         // Handle your navigation logic here
-                                        // navigate(`/article/${album.id}`);
-                                        // localStorage.setItem('currentArticle', JSON.stringify(album));
+                                        navigate(`/article/${album.id}`);
+                                        localStorage.setItem('currentArticle', JSON.stringify(album));
                                     }}
                                 >
                                     <div className="image-container">

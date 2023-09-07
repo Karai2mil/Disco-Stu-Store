@@ -126,9 +126,6 @@ const SellArticle = () => {
                             </div>
                         </div>
                     </div>
-                    <div id='advertencia'>
-                        <p style={{ fontSize: '1rem', padding: '5px 0px 5px 10px' }}><strong>El listado de articulos es gratis, Disco Stu cobrara una tarifa del 5% una vez finalizada la venta.</strong></p>
-                    </div>
                     <div id='properties'>
                         <div>
                             <h5><strong>Estado y comentarios</strong></h5>

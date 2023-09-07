@@ -37,7 +37,7 @@ const InitializeAsSeller = () => {
                         </div>
                         <div className='d-flex flex-column align-items-center'>
                             <p style={{color: 'white'}}>2) Conectate con PayPal</p>
-                            <img style={{width: '80%', marginBottom: '68px'}} src={perfil} alt="" />
+                            <img style={{width: '80%', marginBottom: '69px'}} src={perfil} alt="" />
                         </div>
                     </div>
                 </div>
