@@ -85,7 +85,6 @@ export const UserProfile = () => {
 
     return (
         <div className="container-fluid px-0 mx-0">
-
             <div className="card border-0 rounded-0">
                 <div className=" text-white d-flex flex-row" style={{ backgroundColor: '#000', height: '170px' }}>
                 </div>

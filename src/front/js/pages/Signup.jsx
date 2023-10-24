@@ -82,7 +82,6 @@ export const Signup = () => {
     };
 
     return (
-
         <div className="container mt-3">
             <main>
                 <div className="row">

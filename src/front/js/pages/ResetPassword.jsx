@@ -57,7 +57,7 @@ const ResetPassword = () => {
     };
 
     return (
-        <Container id="page" className="mt-3" style={{ marginBottom: '400px' }}>
+        <Container id="page" className="mt-3">
             <div id="page_content" role="main">
                 <h2>Restablecer Contraseña</h2>
                 <p>Ingresa tu nueva contraseña.</p>

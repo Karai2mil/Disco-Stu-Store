@@ -37,7 +37,7 @@ const ForgotPassword = () => {
     };
 
     return (
-        <Container id="page" className="mt-3" style={{ marginBottom: '400px' }}>
+        <Container id="page" className="mt-3">
             <div id="page_content" role="main">
                 <h2>Olvidaste tu contraseña</h2>
                 <p className="my-3">

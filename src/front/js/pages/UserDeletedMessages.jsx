@@ -107,7 +107,7 @@ export const UserDeletedMessages = () => {
     };
 
     return (
-        <div style={{marginBottom: '180px'}}>
+        <div>
             {/* Header */}
             <div className="card bg-black rounded-0 border-0">
                 <div

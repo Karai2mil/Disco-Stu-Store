@@ -7,7 +7,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 			deleted_messages: [],
 			searchResults: [],
 			articleInReview: {},
-
 			explorer_articles: [],
 			filtered_explorer_articles: [],
 			on_filtered_or_explorer: true,

@@ -94,7 +94,6 @@ export const UserFavorites = () => {
 
     return (
         <div>
-            {/* header fondo negro */}
             <div className="card border-0 rounded-0">
                 <div className=" text-white d-flex flex-row" style={{ backgroundColor: '#000', height: '100px' }}>
                     <div className="ms-3" style={{ marginTop: '130px' }}>

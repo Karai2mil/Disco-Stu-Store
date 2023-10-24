@@ -9,7 +9,6 @@ import { PayPalScriptProvider } from "@paypal/react-paypal-js";
 
 // Pages
 import Home from "./pages/Home.jsx";
-import { Demo } from "./pages/demo";
 import { Single } from "./pages/single";
 import { Signup } from "./pages/Signup.jsx";
 import { Login } from "./pages/Login.jsx";
@@ -67,54 +66,57 @@ const Layout = () => {
     };
 
     return (
-        <div>
+        <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
             <BrowserRouter basename={basename}>
                 <ScrollToTop>
                     <Navbar />
                     <PayPalScriptProvider option={initialOptions}>
-                        <Routes>
-                            <Route element={<Home />} path="/" />
-                            <Route element={<Signup />} path="/signup" />
-                            <Route element={<Login />} path="/login" />
-                            <Route element={<PrivateRoutes />}>
-                                <Route element={<AdminPanel />} path="/admin-panel" />
-                                <Route element={<AdminInbox />} path="/admin-inbox" />
-                                <Route element={<AdminArchivedMessages />} path="/admin-archived-messages" />
-                                <Route element={<AdminApprovals />} path="/approvals" />
-                                <Route element={<ArticleReview />} path="/article-review/:id" />
-                                <Route element={<EditHome />} path="/home-edition" />
-                                <Route element={<UserProfile />} path="/user-profile" />
-                                <Route element={<UserProfileEdit />} path="/edit-user" />
-                                <Route element={<UserSellerDataEdit />} path="/seller" />
-                                <Route element={<UserFavorites />} path="/favorites" />
-                                <Route element={<ChangePassword />} path="/update-password" />
-                                <Route element={<UserOrders />} path="/user-orders" />
-                                <Route element={<UserInbox />} path="/messages" />
-                                <Route element={<UserSentMessages />} path="/messages/sent" />
-                                <Route element={<UserDeletedMessages />} path="/messages/trash" />
-                                <Route element={<UserComposeMessage />} path="/messages/compose" />
-                                <Route element={<UserViewMessage />} path="/messages/message" />
-                                <Route element={<UserViewOrderMessage />} path="/messages/message/order" />
-                                <Route element={<Article mode='edit' />} path="/articles/edit/:id" />
-                                <Route element={<Article />} path="/articles/add" />
-                            </Route>
-                            <Route element={<ForgotPassword />} path="/forgot-password" />
-                            <Route element={<About />} path="/about" />
-                            <Route element={<Contact />} path="/contact" />
-                            <Route element={<Artist />} path="/artists" />
-                            <Route element={<GalleryTemplate />} path="/gallery_template" />
-                            <Route element={<ArticleDetails />} path="/article/:id" />
-                            <Route element={<Explorer />} path='/explorer' />
-                            <Route element={<Demo />} path="/demo" />
-                            <Route element={<Single />} path="/single/:theid" />
-                            <Route element={<SellArticle />} path="/sell/:id" />
-                            <Route element={<InitializeAsSeller />} path='/sellers' />
-                            <Route element={<Offers />} path="/offers/:id" />
-                            <Route element={<Cart />} path="/cart" />
-                            <Route element={<h1>Not found!</h1>} />
-                        </Routes>
+                        <div style={{ flex: '1', height: '100%' }}>
+                            <Routes>
+                                <Route element={<Home />} path="/" />
+                                <Route element={<Signup />} path="/signup" />
+                                <Route element={<Login />} path="/login" />
+                                <Route element={<PrivateRoutes />}>
+                                    <Route element={<AdminPanel />} path="/admin-panel" />
+                                    <Route element={<AdminInbox />} path="/admin-inbox" />
+                                    <Route element={<AdminArchivedMessages />} path="/admin-archived-messages" />
+                                    <Route element={<AdminApprovals />} path="/approvals" />
+                                    <Route element={<ArticleReview />} path="/article-review/:id" />
+                                    <Route element={<EditHome />} path="/home-edition" />
+                                    <Route element={<UserProfile />} path="/user-profile" />
+                                    <Route element={<UserProfileEdit />} path="/edit-user" />
+                                    <Route element={<UserSellerDataEdit />} path="/seller" />
+                                    <Route element={<UserFavorites />} path="/favorites" />
+                                    <Route element={<ChangePassword />} path="/update-password" />
+                                    <Route element={<UserOrders />} path="/user-orders" />
+                                    <Route element={<UserInbox />} path="/messages" />
+                                    <Route element={<UserSentMessages />} path="/messages/sent" />
+                                    <Route element={<UserDeletedMessages />} path="/messages/trash" />
+                                    <Route element={<UserComposeMessage />} path="/messages/compose" />
+                                    <Route element={<UserViewMessage />} path="/messages/message" />
+                                    <Route element={<UserViewOrderMessage />} path="/messages/message/order" />
+                                    <Route element={<Article mode='edit' />} path="/articles/edit/:id" />
+                                    <Route element={<Article />} path="/articles/add" />
+                                </Route>
+                                <Route element={<ForgotPassword />} path="/forgot-password" />
+                                <Route element={<About />} path="/about" />
+                                <Route element={<Contact />} path="/contact" />
+                                <Route element={<Artist />} path="/artists" />
+                                <Route element={<GalleryTemplate />} path="/gallery_template" />
+                                <Route element={<ArticleDetails />} path="/article/:id" />
+                                <Route element={<Explorer />} path='/explorer' />
+                                <Route element={<Single />} path="/single/:theid" />
+                                <Route element={<SellArticle />} path="/sell/:id" />
+                                <Route element={<InitializeAsSeller />} path='/sellers' />
+                                <Route element={<Offers />} path="/offers/:id" />
+                                <Route element={<Cart />} path="/cart" />
+                                <Route element={<h1>Not found!</h1>} />
+                            </Routes>
+                        </div>
                     </PayPalScriptProvider>
-                    <Footer />
+                    <div>
+                        <Footer />
+                    </div>
                 </ScrollToTop>
             </BrowserRouter>
         </div>

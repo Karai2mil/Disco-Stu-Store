@@ -72,7 +72,7 @@ export const Login = () => {
     };
 
     return (
-        <div className="container mt-3" style={{marginBottom: '46px'}}>
+        <div className="container mt-3">
             <main>
                 <div className="row">
                     <div className="col-lg-3 col-md-3 col-sm-2 col-xs-3"></div>

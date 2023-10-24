@@ -99,8 +99,7 @@ const User_sent_messages = () => {
     };
 
     return (
-        <div style={{marginBottom: '180px'}}>
-            {/* Header */}
+        <div>
             <div className="card bg-black rounded-0 border-0">
                 <div
                     className="text-white d-flex flex-row w-100 border-0"

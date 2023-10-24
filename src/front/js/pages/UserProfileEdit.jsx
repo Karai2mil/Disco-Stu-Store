@@ -60,7 +60,6 @@ export const UserProfileEdit = () => {
 
     return (
         <div className="container-fluid px-0 mx-0">
-
             <div className="card border-0 rounded-0">
                 <div className=" text-white d-flex flex-row" style={{ backgroundColor: '#000', height: '200px' }}>
                     <div className="ms-4 mt-5 d-flex flex-column" style={{ width: '150px' }}>
