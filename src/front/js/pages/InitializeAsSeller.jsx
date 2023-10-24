@@ -21,7 +21,7 @@ const InitializeAsSeller = () => {
                 <div className='row'>
                     <div className='col-md-6 d-flex flex-column justify-content-center align-items-center mt-5'>
                         <p style={{ width: '80%', color: 'white', textAlign: 'center', paddingTop: '25px', paddingBottom: '25px' }}>
-                            DiscoStu Store ofrece su mercado de venta online para aquellos usuarios avocados al comercio musical. El costo de usuario vendedor tiene como fines únicos el mantenimiento de la página y el crecimiento de esta comunidad.
+                             Store ofrece su mercado de venta online para aquellos usuarios avocados al comercio musical. El costo de usuario vendedor tiene como fines únicos el mantenimiento de la página y el crecimiento de esta comunidad.
                         </p>
                         <p style={{ width: '80%', color: 'white', textAlign: 'center', paddingTop: '10px', paddingBottom: '25px' }}>
                             El usuario vendedor tiene la posibilidad de publicar articulos en venta de forma ilimitada. Accede a estos recursos abonando 10 USD de forma ÚNICA.
