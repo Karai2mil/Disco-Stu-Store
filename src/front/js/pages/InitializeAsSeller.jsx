@@ -14,7 +14,7 @@ const InitializeAsSeller = () => {
 
 
     return (
-        <div style={{background: 'black' }}>
+        <div style={{background: 'black', padding: '2% 0%' }}>
             <div className='container' id="presentation" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
                 <img style={{ width: '600px', marginTop: '10px' }} src={fondo} alt="" />
                 <img style={{ width: '800px' }} src={pagasUnaVez} alt="" />
