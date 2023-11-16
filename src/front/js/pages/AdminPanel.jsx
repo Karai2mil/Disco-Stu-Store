@@ -16,11 +16,15 @@ export const AdminPanel = () => {
     );
 
     useEffect(() => {
-        const fetchPendingApprovals = async () => {
-            const pendingApprovals = await actions.getArticleForApproval();
-            if (pendingApprovals)
-                sessionStorage.setItem("pendingApprovals", pendingApprovals.length);
-            setPendingApprovalsCount(pendingApprovals.length);
+        const fetchPendingArticles = async () => {
+            const pendingArticleApprovals = await actions.getArticleForApproval();
+            const pendingVideoApprovals = await actions.getVideoUpdates();
+
+            if (pendingArticleApprovals && pendingVideoApprovals) {
+                const totalApprovals = pendingArticleApprovals.length + pendingVideoApprovals.data.length
+                sessionStorage.setItem("pendingApprovals", totalApprovals);
+                setPendingApprovalsCount(totalApprovals);
+            }
         };
 
         const handlePendingApprovalsUpdate = (event) => {
@@ -30,7 +34,7 @@ export const AdminPanel = () => {
             }
         };
 
-        fetchPendingApprovals();
+        fetchPendingArticles();
 
         window.addEventListener("message", handlePendingApprovalsUpdate);
 
@@ -121,7 +125,7 @@ export const AdminPanel = () => {
                             <h3 className="text-center">Panel de Administrador</h3>
                         </div>
                         <div id="icons" style={{ marginTop: '30px' }}>
-                            <div className="d-flex align-items-center justify-content-between w-50 m-auto">
+                            <div  style={{width: '70%'}} className="d-flex align-items-center justify-content-between m-auto">
                                 <div className="nav-item me-3 me-lg-0">
                                     <Link to="/home-edition" className="nav-link text-white d-flex align-items-center">
                                         <i className="fa-solid fa-pencil p-2"></i>
@@ -160,6 +164,12 @@ export const AdminPanel = () => {
                                         <p>Bandeja de entrada</p>
                                     </Link>
                                 </div>
+                                <div className="nav-item me-3 me-lg-0">
+                                    <Link to="/admin/reported/comments" className="nav-link text-white d-flex align-items-center">
+                                        <i class="fa-solid fa-comment-medical p-2"></i>
+                                        <p>Comentarios denunciados</p>
+                                    </Link>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -170,8 +180,8 @@ export const AdminPanel = () => {
             <div className="container" style={{ margin: '30px 100px', border: '1px solid #eeeeee' }}>
                 <div className="row" style={{ margin: '30px 70px' }}>
                     <div id="messages_center" className="">
-                        <h3 className="mb-3">Administrar usuarios</h3>
-                        <div className="mb-3">
+                        <div className="d-flex mb-3 justify-content-between">
+                            <h3 className="m-0">Administrar usuarios</h3>
                             <button onClick={() => handleDeleteSelectedUsers()} className="btn btn-light"><i className="fa-solid fa-trash"></i> Eliminar</button>
                         </div>
                         {status === "loading" ? (
@@ -184,15 +194,17 @@ export const AdminPanel = () => {
                                     <p>No hay usuarios registrados</p>
                                 ) : (
                                     <table className="table table-hover">
-                                        <tr>
-                                            <th>
-                                                <input type="checkbox" />
-                                            </th>
-                                            <th>Usuario</th>
-                                            <th>Nombre Real</th>
-                                            <th>Correo Electrónico</th>
-                                            <th></th>
-                                        </tr>
+                                        <thead>
+                                            <tr>
+                                                <th>
+                                                    <input type="checkbox" />
+                                                </th>
+                                                <th>Usuario</th>
+                                                <th>Nombre Real</th>
+                                                <th>Correo Electrónico</th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
                                         <tbody>
                                             {filteredUsers.map((user) => (
                                                 <tr key={user.id}>

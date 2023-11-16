@@ -1,0 +1,60 @@
+.videoListImg {
+    width: 70px;
+    object-fit: cover;
+    object-position: center center;
+    margin-bottom: 0.4rem;
+    margin-right: 0.3rem;
+}
+
+.videoList {
+    opacity: 0.8;
+    cursor: pointer;
+}
+
+.selectedVideo {
+    opacity: 1;
+}
+
+.videoList:hover {
+    opacity: 1;
+}
+
+.blueFont {
+    color: rgb(52, 52, 204);
+    font-weight: bold;
+    font-size: 0.85rem;
+    cursor: pointer;
+}
+.blueFont:hover{
+    text-decoration: underline;
+}
+
+.videoList p:hover {
+    text-decoration: underline;
+}
+
+.buttons {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.songList td {
+    padding: 4px 8px;
+}
+
+.videosScroll {
+    max-height: 175px;
+    overflow-y: auto;
+}
+
+.reportLetter {
+    color: red;
+    cursor: pointer;
+}
+
+.reportLetter:hover {
+    text-decoration: underline;
+}

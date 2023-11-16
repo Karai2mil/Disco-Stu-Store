@@ -2,24 +2,17 @@
 This module takes inbox_usere of starting the API Server for users, Loading the DB and Adding the endpoints
 """
 from flask import Flask, request, jsonify, url_for, Blueprint
-from api.models import db, User, Bandeja_de_entrada_admin, Archivo_mensajes_admin
+from api.models import db, User, Bandeja_de_entrada_admin, Archivo_mensajes_admin, ComentariosDeArticulo
 from api.utils import generate_sitemap, APIException
 
 inbox_admin_api = Blueprint('inbox_admin_api', __name__)
 
 
-@inbox_admin_api.route('/messages/<int:user_id>', methods=['GET'])
-def get_all_messages(user_id):
+@inbox_admin_api.route('/get_messages', methods=['GET'])
+def get_all_messages():
 
-    user = User.query.get(user_id)
-    if not user:
-        return jsonify('Admin not found'), 400
-
-    if user.is_admin != True:
-        return jsonify('No autorizado'), 403
-
-    messages = Bandeja_de_entrada_admin.query.filter_by(id=user_id).all()
-    archived_messages = Archivo_mensajes_admin.query.filter_by(id=user_id).all()
+    messages = Bandeja_de_entrada_admin.query.all()
+    archived_messages = Archivo_mensajes_admin.query.all()
 
     inbox = []
     for element in messages:
@@ -43,7 +36,22 @@ def get_all_messages(user_id):
         }
         archived.append(archived_message_dict)
 
-    return jsonify({'inbox': inbox, 'archived': archived}), 200
+    comments = []
+    for message in inbox:
+        comment_id = message['mensaje']
+        comment = ComentariosDeArticulo.query.filter_by(id=comment_id).first()
+        if comment:
+            comment_dict = {
+                'message_id': message['id'],
+                'id': comment.id,
+                'user_id': comment.user_id,
+                'comentario': comment.comentario,
+                'articulo_id': comment.articulo_id,
+                'fecha': comment.fecha,
+            }
+            comments.append(comment_dict)
+
+    return jsonify({'inbox': inbox, 'archived': archived, 'comments': comments}), 200
 
 
 @inbox_admin_api.route('/messages/archive/', methods=['POST'])
@@ -83,26 +91,16 @@ def archive_inbox_message():
 
 
 @inbox_admin_api.route('/messages/delete/<int:message_id>', methods=['DELETE'])
-def delete_message_permanently(user_id):
+def delete_message_permanently(message_id):
 
     try:
-
-        receptor_id = user_id
-        message_id = request.json.get('message_id')
-
         message = Bandeja_de_entrada_admin.query.filter_by(
             id=message_id).first()
 
         db.session.delete(message)
         db.session.commit()
 
-        response = {
-            'receptor_id': receptor_id,
-            'emisor_id': message.emisor_id,
-            'message_id': message.id
-        }
-
-        return jsonify({'Message deleted permanently': response})
+        return jsonify({'status': 'COMPLETED'})
 
     except Exception as e:
         return jsonify({'error': 'Error deleting message: ' + str(e)}), 500

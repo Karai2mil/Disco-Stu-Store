@@ -39,7 +39,9 @@ import InitializeAsSeller from "./pages/InitializeAsSeller.jsx";
 import { ArticleReview } from "./pages/AdminReviewArticle.jsx";
 import EditHome from "./pages/EditHome.jsx";
 import ForgotPassword from "./pages/forgotPassword.jsx";
-
+import EditArticleVideos from "./pages/EditArticleVideos.jsx";
+import AdminReviewVideoUpdate from "./pages/AdminReviewVideoUpdate.jsx";
+import { AdminReportedComments } from "./pages/AdminReportedComments.jsx";
 //Components
 import { Artist } from "./pages/artist";
 import { BackendURL } from "./component/backendURL";
@@ -79,6 +81,8 @@ const Layout = () => {
                                 <Route element={<PrivateRoutes />}>
                                     <Route element={<AdminPanel />} path="/admin-panel" />
                                     <Route element={<AdminInbox />} path="/admin-inbox" />
+                                    <Route element={<AdminReportedComments />} path="/admin/reported/comments" />
+                                    <Route element ={<AdminReviewVideoUpdate />} path="/videos/update/review/:id" />
                                     <Route element={<AdminArchivedMessages />} path="/admin-archived-messages" />
                                     <Route element={<AdminApprovals />} path="/approvals" />
                                     <Route element={<ArticleReview />} path="/article-review/:id" />
@@ -97,6 +101,7 @@ const Layout = () => {
                                     <Route element={<UserViewOrderMessage />} path="/messages/message/order" />
                                     <Route element={<Article mode='edit' />} path="/articles/edit/:id" />
                                     <Route element={<Article />} path="/articles/add" />
+                                    <Route element={<InitializeAsSeller />} path='/sellers' />
                                 </Route>
                                 <Route element={<ForgotPassword />} path="/forgot-password" />
                                 <Route element={<About />} path="/about" />
@@ -107,9 +112,9 @@ const Layout = () => {
                                 <Route element={<Explorer />} path='/explorer' />
                                 <Route element={<Single />} path="/single/:theid" />
                                 <Route element={<SellArticle />} path="/sell/:id" />
-                                <Route element={<InitializeAsSeller />} path='/sellers' />
                                 <Route element={<Offers />} path="/offers/:id" />
                                 <Route element={<Cart />} path="/cart" />
+                                <Route element ={<EditArticleVideos />} path="/videos/update/:id" />
                                 <Route element={<h1>Not found!</h1>} />
                             </Routes>
                         </div>

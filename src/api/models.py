@@ -1,4 +1,6 @@
 from flask_sqlalchemy import SQLAlchemy
+import  json
+from sqlalchemy.dialects.postgresql import JSONB
 
 db = SQLAlchemy()
 
@@ -85,6 +87,75 @@ class Articulo(db.Model):
             'estilos': self.estilos,
             'tracks': tracks_list
         }
+
+# Contenido nuevo
+
+class ComentariosDeArticulo(db.Model):
+    __tablename__ = 'comentarios_de_articulo'
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    articulo_id = db.Column(db.Integer, db.ForeignKey('articulo.id'))
+    comentario = db.Column(db.String(500))
+    fecha = db.Column(db.String(50))
+    reportados = db.relationship('ComentariosDeArticuloReportados', backref='comentario_articulo', cascade='all, delete-orphan', passive_deletes=True)
+
+
+class ComentariosDeArticuloReportados(db.Model):
+    __tablename__ = 'comentarios_de_articulo_reportados'
+    id = db.Column(db.Integer, primary_key=True)
+    user_id_escritor = db.Column(db.Integer, db.ForeignKey('user.id'))
+    articulo_id = db.Column(db.Integer, db.ForeignKey('articulo.id'))
+    comentario = db.Column(db.String(500))
+    fecha = db.Column(db.String(50))
+    comentario_id = db.Column(db.Integer, db.ForeignKey('comentarios_de_articulo.id', ondelete='CASCADE'), nullable=False)
+    fecha_de_reporte = db.Column(db.String(50))
+    user_id_denunciante = db.Column(db.Integer, db.ForeignKey('user.id'))
+
+class VideosDeArticulos(db.Model):
+    __tablename__ = 'videos_de_articulos'
+    id = db.Column(db.Integer, primary_key=True)
+    articulo_id = db.Column(db.Integer, db.ForeignKey('articulo.id'))
+    video_id = db.Column(db.String(100))
+    titulo = db.Column(db.String(100))
+    url_imagen = db.Column(db.String(250))
+    fecha_creacion_video = db.Column(db.String(100))
+    nombre_canal = db.Column(db.String(100))
+    canal_id = db.Column(db.String(100))
+    posicion = db.Column(db.Integer)
+
+class ActualizacionesDeVideos(db.Model):
+    __tablename__ = 'actualizaciones_de_videos'
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    articulo_id = db.Column(db.Integer, db.ForeignKey('articulo.id'))
+    fecha = db.Column(db.String(50))
+    posicion = db.Column(JSONB)
+    cambios = db.Column(JSONB)
+
+    def __init__(self, user_id, articulo_id, fecha, cambios=None):
+        self.user_id = user_id
+        self.articulo_id = articulo_id
+        self.fecha = fecha
+        self.posicion = {}
+        self.cambios = cambios or []
+
+    def agregar_cambio(self, video_id, titulo, url_imagen, fecha_creacion_video, nombre_canal, canal_id, cambio):
+        nuevo_objeto = {
+            'video_id': video_id,
+            'titulo': titulo,
+            'url_imagen': url_imagen,
+            'fecha_creacion_video': fecha_creacion_video,
+            'nombre_canal': nombre_canal,
+            'canal_id': canal_id,
+            'cambio': cambio
+        }
+        self.cambios.append(nuevo_objeto)
+
+    def definir_posicion(self, video_id, posicion):
+        self.posicion[video_id] = posicion
+
+    def obtener_cambios(self):
+        return self.cambios
 
 
 class Aprobaciones(db.Model):

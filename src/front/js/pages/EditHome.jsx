@@ -17,11 +17,15 @@ const EditHome = () => {
     );
 
     useEffect(() => {
-        const fetchPendingApprovals = async () => {
-            const pendingApprovals = await actions.getArticleForApproval();
-            if (pendingApprovals)
-                sessionStorage.setItem("pendingApprovals", pendingApprovals.length);
-            setPendingApprovalsCount(pendingApprovals.length);
+        const fetchPendingArticles = async () => {
+            const pendingArticleApprovals = await actions.getArticleForApproval();
+            const pendingVideoApprovals = await actions.getVideoUpdates();
+
+            if (pendingArticleApprovals && pendingVideoApprovals) {
+                const totalApprovals = pendingArticleApprovals.length + pendingVideoApprovals.data.length
+                sessionStorage.setItem("pendingApprovals", totalApprovals);
+                setPendingApprovalsCount(totalApprovals);
+            }
         };
 
         const handlePendingApprovalsUpdate = (event) => {
@@ -31,7 +35,7 @@ const EditHome = () => {
             }
         };
 
-        fetchPendingApprovals();
+        fetchPendingArticles();
 
         window.addEventListener("message", handlePendingApprovalsUpdate);
 
@@ -82,11 +86,11 @@ const EditHome = () => {
                             <h3 className="text-center">Panel de Administrador</h3>
                         </div>
                         <div id="icons" style={{ marginTop: '30px' }}>
-                            <div className="d-flex align-items-center justify-content-between w-50 m-auto">
+                            <div  style={{width: '70%'}} className="d-flex align-items-center justify-content-between m-auto">
                                 <div className="nav-item me-3 me-lg-0">
                                     <Link to="/home-edition" className="nav-link text-white d-flex align-items-center">
                                         <i className="fa-solid fa-pencil p-2"></i>
-                                        <p style={{ fontSize: '1.1rem' }}>Editar home</p>
+                                        <p>Editar home</p>
                                     </Link>
                                     <div className="d-flex justify-content-center">
                                         <i className="fa-solid fa-caret-down" style={{ color: '#ffffff' }}></i>
@@ -95,7 +99,7 @@ const EditHome = () => {
                                 <div className="nav-item me-3 me-lg-0">
                                     <Link to="/admin-panel" className="nav-link text-white d-flex align-items-center">
                                         <i className="fa-solid fa-users p-2"></i>
-                                        <p>Administrar usuarios</p>
+                                        <p style={{ fontSize: '1.1rem' }}>Administrar usuarios</p>
                                     </Link>
                                 </div>
                                 <div className="nav-item me-3 me-lg-0 justify-content-center">
@@ -119,6 +123,12 @@ const EditHome = () => {
                                     <Link to="/admin-inbox" className="nav-link text-white d-flex align-items-center">
                                         <i className="fa-solid fa-message p-2"></i>
                                         <p>Bandeja de entrada</p>
+                                    </Link>
+                                </div>
+                                <div className="nav-item me-3 me-lg-0">
+                                    <Link to="/admin/reported/comments" className="nav-link text-white d-flex align-items-center">
+                                        <i class="fa-solid fa-comment-medical p-2"></i>
+                                        <p>Comentarios denunciados</p>
                                     </Link>
                                 </div>
                             </div>

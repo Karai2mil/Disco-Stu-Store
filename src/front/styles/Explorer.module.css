@@ -31,3 +31,21 @@ p{
     list-style-type: none;
     padding: 10px 60px 0px 0px;
 }
+
+.blueFont {
+    color: rgb(52, 52, 204);
+    cursor: pointer;
+}
+
+.blueFont:hover{
+    text-decoration: underline;
+}
+
+.ArticleCardStyles{
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    width: 95%;
+    font-size: 0.9rem;
+    margin: 0;
+}

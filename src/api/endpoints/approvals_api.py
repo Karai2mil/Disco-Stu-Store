@@ -102,3 +102,6 @@ def delete_all():
     db.session.commit()
 
     return jsonify({'message': 'Approvals deleted succesfully'}), 200
+
+
+

@@ -9,7 +9,9 @@ export const ArticleReview = ({ id }) => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        setArticleInReview(store.articleInReview);
+        const article = store.articleInReview
+        console.log(article)
+        setArticleInReview(article);
     }, [articleInReview]);
 
     const handleAddArticle = async () => {
@@ -66,15 +68,15 @@ export const ArticleReview = ({ id }) => {
     }
 
     return (
-        <div className="container-fluid">
+        <div className="container-fluid p-0">
             {/* Encabezado */}
             <div className="container-fluid px-0 mx-0">
                 <div className="card border-0 rounded-0">
                     <div
                         className="p-4 text-black"
-                        style={{ backgroundColor: "#f8f9fa" }}
+                        style={{ backgroundColor: "black" }}
                     >
-                        <h3 className="text-center">Panel de Administrador</h3>
+                        <h3 style={{ color: 'white' }} className="text-center">Revisión de artículo</h3>
                         <div className="d-flex justify-content-end text-center py-1">
                         </div>
                     </div>
@@ -82,7 +84,7 @@ export const ArticleReview = ({ id }) => {
                 </div>
             </div>
 
-            <div className="container mt-3" style={{marginBottom: '212px'}}>
+            <div className="container mt-3" style={{ marginBottom: '212px' }}>
                 {articleInReview && (
                     <div key={articleInReview.id} className="row">
                         <div className="col-md-4">

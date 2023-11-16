@@ -1,0 +1,17 @@
+.blueFont {
+    color: rgb(52, 52, 204);
+    font-weight: bold;
+    font-size: 1rem;
+    cursor: pointer;
+}
+.blueFont:hover{
+    text-decoration: underline;
+}
+
+.button{
+    height: 35px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 13px;
+}

@@ -212,6 +212,23 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 			},
 
+			getAllAdminMessages: async () => {
+				try {
+					const backendUrl = process.env.BACKEND_URL + "/api/inbox_admin/get_messages";
+					const response = await fetch(backendUrl)
+
+					if (!response.ok) {
+						throw new Error('Response error')
+					}
+					const data = await response.json()
+					console.log(data)
+					return data;
+				} catch (error) {
+					console.log('Error charging messages: ', error)
+					return [];
+				}
+			},
+
 			sendMessage: async (senderID, message_data) => {
 				try {
 					const backendUrl = process.env.BACKEND_URL + "/api/inbox_user/messages/sent/" + senderID;
@@ -235,19 +252,39 @@ const getState = ({ getStore, getActions, setStore }) => {
 			deleteMessage: async (selectedItems) => {
 				try {
 					const backendUrl = process.env.BACKEND_URL + "/api/inbox_user/messages/trash";
-						const response = await fetch(backendUrl, {
-							method: 'POST',
-							body: JSON.stringify({ message_ids: selectedItems }),
-							headers: {
-								"Content-Type": "application/json"
-							}
-						});
-
-						if (!response.ok) {
-							console.log('Response error:', response.status);
+					const response = await fetch(backendUrl, {
+						method: 'POST',
+						body: JSON.stringify({ message_ids: selectedItems }),
+						headers: {
+							"Content-Type": "application/json"
 						}
-						const data = await response.json();
-						return data
+					});
+
+					if (!response.ok) {
+						console.log('Response error:', response.status);
+					}
+					const data = await response.json();
+					return data
+				} catch (error) {
+					console.log('Error deleting messages:', error);
+				}
+			},
+
+			deleteAdminMessage: async (message_id) => {
+				try {
+					const backendUrl = process.env.BACKEND_URL + `/api/inbox_admin/messages/delete/${message_id}`;
+					const response = await fetch(backendUrl, {
+						method: 'DELETE',
+						headers: {
+							"Content-Type": "application/json"
+						}
+					});
+
+					if (!response.ok) {
+						console.log('Response error:', response.status);
+					}
+					const data = await response.json();
+					return data
 				} catch (error) {
 					console.log('Error deleting messages:', error);
 				}
@@ -256,19 +293,19 @@ const getState = ({ getStore, getActions, setStore }) => {
 			recoverDeletedMessages: async (selectedItems) => {
 				try {
 					const backendUrl = process.env.BACKEND_URL + "/api/inbox_user/messages";
-						const response = await fetch(backendUrl, {
-							method: 'POST',
-							body: JSON.stringify({ message_ids: selectedItems }),
-							headers: {
-								"Content-Type": "application/json"
-							}
-						});
-
-						if (!response.ok) {
-							console.log('Response error:', response.status);
+					const response = await fetch(backendUrl, {
+						method: 'POST',
+						body: JSON.stringify({ message_ids: selectedItems }),
+						headers: {
+							"Content-Type": "application/json"
 						}
-						const data = await response.json();
-						return data
+					});
+
+					if (!response.ok) {
+						console.log('Response error:', response.status);
+					}
+					const data = await response.json();
+					return data
 				} catch (error) {
 					console.log('Error recovering messages:', error);
 				}
@@ -277,19 +314,19 @@ const getState = ({ getStore, getActions, setStore }) => {
 			deleteSentMessages: async (selectedItems) => {
 				try {
 					const backendUrl = process.env.BACKEND_URL + "/api/inbox_user/messages/sent";
-						const response = await fetch(backendUrl, {
-							method: 'DELETE',
-							body: JSON.stringify({ message_ids: selectedItems }),
-							headers: {
-								"Content-Type": "application/json"
-							}
-						});
-
-						if (!response.ok) {
-							console.log('Response error:', response.status);
+					const response = await fetch(backendUrl, {
+						method: 'DELETE',
+						body: JSON.stringify({ message_ids: selectedItems }),
+						headers: {
+							"Content-Type": "application/json"
 						}
-						const data = await response.json();
-						return data
+					});
+
+					if (!response.ok) {
+						console.log('Response error:', response.status);
+					}
+					const data = await response.json();
+					return data
 				} catch (error) {
 					console.log('Error deleting messages:', error);
 				}
@@ -298,19 +335,19 @@ const getState = ({ getStore, getActions, setStore }) => {
 			deleteTrashMessages: async (selectedItems) => {
 				try {
 					const backendUrl = process.env.BACKEND_URL + "/api/inbox_user/messages/trash";
-						const response = await fetch(backendUrl, {
-							method: 'DELETE',
-							body: JSON.stringify({ message_ids: selectedItems }),
-							headers: {
-								"Content-Type": "application/json"
-							}
-						});
-
-						if (!response.ok) {
-							console.log('Response error:', response.status);
+					const response = await fetch(backendUrl, {
+						method: 'DELETE',
+						body: JSON.stringify({ message_ids: selectedItems }),
+						headers: {
+							"Content-Type": "application/json"
 						}
-						const data = await response.json();
-						return data
+					});
+
+					if (!response.ok) {
+						console.log('Response error:', response.status);
+					}
+					const data = await response.json();
+					return data
 				} catch (error) {
 					console.log('Error deleting messages:', error);
 				}
@@ -362,6 +399,27 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 				return data;
 			},
+
+			getArticleById: async (article_id) => {
+				try {
+					const backendUrl = process.env.BACKEND_URL + `/api/articles/${article_id}`;
+					const response = await fetch(backendUrl, {
+						method: "GET",
+						headers: {
+							"Content-Type": "application/json"
+						}
+					});
+
+					if (!response.ok)
+						throw new Error("Error on fetch getting article by id");
+
+					const data = await response.json();
+					return data
+				} catch (error) {
+					console.log({ 'Errr getting article by id': error })
+				}
+			},
+
 			getAllArticlesGroupedByGenre: async () => {
 				const backendUrl = process.env.BACKEND_URL + "/api/articles/get_all_grouped_by_genre/";
 				const response = await fetch(backendUrl, {
@@ -1135,7 +1193,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 						headers: {
 							'Content-Type': 'application/json',
 						},
-						body: JSON.stringify({"ofertas_ids": ofertas_ids})
+						body: JSON.stringify({ "ofertas_ids": ofertas_ids })
 					});
 
 					if (!response.ok) {
@@ -1149,6 +1207,256 @@ const getState = ({ getStore, getActions, setStore }) => {
 					throw error;
 				}
 			},
+
+			getArticleVideos: async (article_id) => {
+				try {
+					const backendUrl = process.env.BACKEND_URL + `/api/articles/get_videos/${article_id}`;
+					const response = await fetch(backendUrl, {
+						method: 'GET',
+						headers: {
+							'Content-Type': 'application/json',
+						}
+					});
+
+					if (!response.ok) {
+						throw new Error('Failed getting videos');
+					}
+					const data = await response.json()
+					return data
+				} catch (error) {
+					console.error('Error getting videos', error);
+					throw error;
+				}
+			},
+
+			getVideoUpdates: async () => {
+				try {
+					const backendUrl = process.env.BACKEND_URL + `/api/articles/get_updates`;
+					const response = await fetch(backendUrl, {
+						method: 'GET',
+						headers: {
+							'Content-Type': 'application/json',
+						}
+					});
+
+					if (!response.ok) {
+						throw new Error('Failed getting videos');
+					}
+					const data = await response.json()
+					return data
+				} catch (error) {
+					console.error('Error getting videos', error);
+					throw error;
+				}
+			},
+
+			getVideoUpdateById: async () => {
+				try {
+					const backendUrl = process.env.BACKEND_URL + `/api/articles/get_updates`;
+					const response = await fetch(backendUrl, {
+						method: 'GET',
+						headers: {
+							'Content-Type': 'application/json',
+						}
+					});
+
+					if (!response.ok) {
+						throw new Error('Failed getting videos');
+					}
+					const data = await response.json()
+					return data
+				} catch (error) {
+					console.error('Error getting videos', error);
+					throw error;
+				}
+			},
+
+			addVideoUpdateRequest: async (updates) => {
+				try {
+					const backendUrl = process.env.BACKEND_URL + `/api/articles/add_update`;
+					const response = await fetch(backendUrl, {
+						method: 'POST',
+						headers: {
+							'Content-Type': 'application/json',
+						},
+						body: JSON.stringify(updates)
+					});
+
+					if (!response.ok) {
+						throw new Error('Failed adding video updates');
+					}
+					const data = await response.json()
+					return data
+				} catch (error) {
+					console.error('Error adding video updates', error);
+					throw error;
+				}
+			},
+
+			rejectVideoUpdates: async (id) => {
+				try {
+					const backendUrl = process.env.BACKEND_URL + `/api/articles/reject_update/${id}`;
+					const response = await fetch(backendUrl, {
+						method: 'DELETE',
+						headers: {
+							'Content-Type': 'application/json',
+						}
+					});
+
+					if (!response.ok) {
+						throw new Error('Failed rejecting videos updates');
+					}
+					const data = await response.json()
+					return data
+				} catch (error) {
+					console.error('Error rejecting videos updates', error);
+					throw error;
+				}
+			},
+
+			approveVideoUpdates: async (id) => {
+				try {
+					const backendUrl = process.env.BACKEND_URL + `/api/articles/add_update/${id}`;
+					const response = await fetch(backendUrl, {
+						method: 'POST',
+						headers: {
+							'Content-Type': 'application/json',
+						}
+					});
+
+					if (!response.ok) {
+						throw new Error('Failed accepting videos updates');
+					}
+					const data = await response.json()
+					return data
+				} catch (error) {
+					console.error('Error accepting videos updates', error);
+					throw error;
+				}
+			},
+
+			sendArticleComment: async (comment_data) => {
+				try{
+					const backendUrl = process.env.BACKEND_URL + `/api/articles/add_comment`;
+					const response = await fetch(backendUrl, {
+						method: 'POST',
+						headers: {
+							'Content-Type': 'application/json'
+						},
+						body: JSON.stringify(comment_data)
+					})
+					if (!response) {
+						throw new Error('Error sening article comment fetch')
+					}
+
+					const data = await response.json()
+					return data
+				}catch(error){
+					console.log('Error sending article comment', error)
+				}
+			},
+
+			getArticleComments: async (article_id) => {
+				try{
+					const backendUrl = process.env.BACKEND_URL + `/api/articles/get_comments/${article_id}`;
+					const response = await fetch(backendUrl, {
+						method: 'GET',
+						headers: {
+							'Content-Type': 'application/json'
+						}
+					})
+					if (!response) {
+						throw new Error('Error getting article comments fetch')
+					}
+
+					const data = await response.json()
+					return data
+				}catch(error){
+					console.log('Error getting article comment', error)
+				}
+			},
+
+			reportComment: async (report_data) => {
+				try{
+					const backendUrl = process.env.BACKEND_URL + `/api/articles/report_comment`;
+					const response = await fetch(backendUrl, {
+						method: 'POST',
+						headers: {
+							'Content-Type': 'application/json'
+						},
+						body: JSON.stringify(report_data)
+					})
+					if (!response) {
+						throw new Error('Error reporting comment fetch')
+					}
+
+					const data = await response.json()
+					return data
+				}catch(error){
+					console.log('Error reporting comment', error)
+				}
+			},
+
+			getCommentsReports: async () => {
+				try {
+					const backendUrl = process.env.BACKEND_URL + `/api/articles/get_reported_comments`;
+					const response = await fetch(backendUrl, {
+						method: 'GET',
+						headers: {
+							"Content-Type": "application/json"
+						}
+					});
+
+					if (!response.ok) {
+						console.log('Response error:', response.status);
+					}
+					const data = await response.json();
+					return data
+				} catch (error) {
+					console.log('Error deleting messages:', error);
+				}
+			},
+
+			deleteArticleComment: async (comment_id) => {
+				try {
+					const backendUrl = process.env.BACKEND_URL + `/api/articles/delete_comment/${comment_id}`;
+					const response = await fetch(backendUrl, {
+						method: 'DELETE',
+						headers: {
+							"Content-Type": "application/json"
+						}
+					});
+
+					if (!response.ok) {
+						console.log('Response error:', response.status);
+					}
+					const data = await response.json();
+					return data
+				} catch (error) {
+					console.log('Error deleting messages:', error);
+				}
+			},
+
+			deleteReport: async (report_id) => {
+				try {
+					const backendUrl = process.env.BACKEND_URL + `/api/articles/delete_report/${report_id}`;
+					const response = await fetch(backendUrl, {
+						method: 'DELETE',
+						headers: {
+							"Content-Type": "application/json"
+						}
+					});
+
+					if (!response.ok) {
+						console.log('Response error:', response.status);
+					}
+					const data = await response.json();
+					return data
+				} catch (error) {
+					console.log('Error deleting messages:', error);
+				}
+			},
+
 		}
 	};
 };

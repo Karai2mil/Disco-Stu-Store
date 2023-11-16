@@ -3,12 +3,11 @@ import { Context } from '../store/appContext'
 import { useNavigate, Link } from 'react-router-dom';
 
 
-export const AdminInbox = () => {
+export const AdminReportedComments = () => {
 
     const navigate = useNavigate()
     const { actions } = useContext(Context)
-    const [selectedItems, setSelectedItems] = useState([]);
-    const [adminMessages, setAdminMessages] = useState();
+    const [reportedComments, setReportedComments] = useState();
     const [pendingApprovalsCount, setPendingApprovalsCount] = useState(
         sessionStorage.getItem("pendingApprovals") || 0
     );
@@ -48,9 +47,9 @@ export const AdminInbox = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const fetchedData = await actions.getAllAdminMessages();
+                const fetchedData = await actions.getCommentsReports();
                 console.log(fetchedData)
-                setAdminMessages(fetchedData);
+                setReportedComments(fetchedData);
 
             } catch (error) {
                 console.log('Error fetching messages: ', error);
@@ -59,41 +58,19 @@ export const AdminInbox = () => {
         fetchData();
     }, []);
 
-    const toggleSelectMessage = (index) => {
-        // Verificar si el índice ya está seleccionado para añadirlo o removerlo de la lista
-        setSelectedItems((prevSelectedItems) => {
-            if (prevSelectedItems.includes(index)) {
-                return prevSelectedItems.filter((selected) => selected !== index);
-            } else {
-                return [...prevSelectedItems, index];
-            }
-        });
-    };
-
-    const handleDeleteMessage = () => {
-        const selectedItemsCopy = [...selectedItems]
-        setSelectedItems([])
-        selectedItemsCopy.map(element => {
-            const message_data = {
-                'message_id': element
-            }
-            actions.deleteMessage(message_data)
-        })
-    }
-
     const hanlderNavigateArticle = (articulo_id) => {
         navigate(`/article/${articulo_id}`)
     }
 
-    const deleteComment = async (message_data) => {
-        const deleteCommentFetch = await actions.deleteArticleComment(message_data.id)
+    const deleteComment = async (report) => {
+        const deleteCommentFetch = await actions.deleteArticleComment(report.comentario_id)
         if (deleteCommentFetch.status === 'COMPLETED') {
             location.reload()
         }
     }
 
-    const keepComment = async (message_data) => {
-        const keepCommentFetch = await actions.deleteAdminMessage(message_data.message_id)
+    const keepComment = async (report) => {
+        const keepCommentFetch = await actions.deleteReport(report.id)
         if (keepCommentFetch.status === 'COMPLETED') {
             location.reload()
         }
@@ -112,7 +89,7 @@ export const AdminInbox = () => {
                             <h3 className="text-center">Panel de Administrador</h3>
                         </div>
                         <div id="icons" style={{ marginTop: '30px' }}>
-                            <div  style={{width: '70%'}} className="d-flex align-items-center justify-content-between m-auto">
+                            <div style={{ width: '70%' }} className="d-flex align-items-center justify-content-between m-auto">
                                 <div className="nav-item me-3 me-lg-0">
                                     <Link to="/home-edition" className="nav-link text-white d-flex align-items-center">
                                         <i className="fa-solid fa-pencil p-2"></i>
@@ -147,15 +124,15 @@ export const AdminInbox = () => {
                                         <i className="fa-solid fa-message p-2"></i>
                                         <p>Bandeja de entrada</p>
                                     </Link>
-                                    <div className="d-flex justify-content-center">
-                                        <i className="fa-solid fa-caret-down" style={{ color: '#ffffff' }}></i>
-                                    </div>
                                 </div>
                                 <div className="nav-item me-3 me-lg-0">
                                     <Link to="/admin/reported/comments" className="nav-link text-white d-flex align-items-center">
                                         <i class="fa-solid fa-comment-medical p-2"></i>
                                         <p>Comentarios denunciados</p>
                                     </Link>
+                                    <div className="d-flex justify-content-center">
+                                        <i className="fa-solid fa-caret-down" style={{ color: '#ffffff' }}></i>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -166,61 +143,48 @@ export const AdminInbox = () => {
             <div style={{ display: 'flex', margin: '30px 100px', border: '1px solid #eeeeee' }}>
                 <div className="container">
                     <div className="row" style={{ margin: '30px 70px' }}>
-                        <div className="col-md-3">
-                            <div className="mt-3">
-                                <div>
-                                    <button style={{ width: '100%', textAlign: 'left', padding: '6px' }} type="button" className="btn btn-outline"><strong>Bandeja de entrada</strong></button>
-                                    <button onClick={() => handleNavigateArchived()} style={{ width: '100%', textAlign: 'left', padding: '6px' }} type="button" className="btn btn-outline">Archivados</button>
-                                </div>
-                            </div>
-                        </div>
-                        <div id="messages_center" className="col-md-9">
-                            <h3 className="mb-3">Bandeja de entrada</h3>
-                            <div className="mb-3 d-flex justify-content-end">
-                                <button onClick={() => handleDeleteMessage()} className="btn btn-outline-dark">Eliminar</button>
-                            </div>
+                        <div id="messages_center">
+                            <h4 className="mb-3">Comentarios denunciados</h4>
                             <div className="table-responsive">
                                 <table className="table table-hover">
                                     <thead className="bg-light" style={{ borderBottom: '2px solid black' }}>
                                         <tr>
-                                            <th className="col"><input type="checkbox" /></th>
-                                            <th className="col">De</th>
-                                            <th className="col">Asunto</th>
-                                            <th className="col">Enviado</th>
+                                            <th className='col'></th>
+                                            <th className="col">Denunciante</th>
+                                            <th className="col">Avance</th>
+                                            <th className="col">Fecha</th>
                                         </tr>
                                     </thead>
-                                    {adminMessages &&
-                                        adminMessages.inbox.length > 0 ? (
-                                        adminMessages.inbox.map((element, index) => (
+                                    {reportedComments &&
+                                        reportedComments.data.length > 0 ? (
+                                        reportedComments.data.map((report, index) => (
                                             <tbody style={{ borderTop: 'none' }}>
-                                                <tr key={element.id} style={{ cursor: 'pointer' }}>
-                                                    <td style={{ width: '30px', padding: '0.5rem' }}>
-                                                        <input type="checkbox" onChange={() => toggleSelectMessage(element.id)} />
+                                                <tr key={report.id} style={{}}>
+                                                    <td style={{ width: '3%', cursor: 'pointer', color: 'rgb(52, 52, 204)' }} data-bs-toggle='collapse' data-bs-target={`#collapse${report.id}`} aria-expanded="false" aria-controls={`collapse${report.id}`}>
+                                                        <i className="fa-solid fa-caret-down"></i>
                                                     </td>
-                                                    <td style={{ width: '25%' }}>{element.emisor_id}</td>
-                                                    <td style={{ width: '54%' }}><p style={{ color: 'rgb(52, 52, 204)', textDecoration: 'underline' }} data-bs-toggle='collapse' data-bs-target={`#collapse${element.id}`} aria-expanded="false" aria-controls={`collapse${element.id}`}>{element.asunto}</p></td>
-                                                    <td style={{ width: '18%' }}>{element.fecha}</td>
+                                                    <td style={{ width: '25%' }}>{report.user_denunciante_usuario}, ID: {report.user_id_denunciante}</td>
+                                                    <td style={{ maxWidth: '54%', width: '54%' }}>
+                                                        <p>{report.comentario.substring(0, 60)}...</p>
+                                                    </td>
+                                                    <td style={{ width: '18%', maxWidth:  '100%' }}>{report.fecha_de_reporte}</td>
                                                 </tr>
                                                 <tr className='w-100'>
                                                     <td colSpan='4' className='p-0'>
-                                                        <div className="collapse my-2" id={`collapse${element.id}`}>
+                                                        <div className="collapse my-2" id={`collapse${report.id}`}>
                                                             <div className="p-3">
-                                                                {adminMessages.comments
-                                                                    .filter(comment => comment.message_id === element.id)
-                                                                    .map(comment => (
-                                                                        <div className='d-flex flex-column w-100' key={comment.id}>
-                                                                            <div style={{ borderBottom: '1px solid rgb(138, 138, 138)', display: 'flex' }}>
-                                                                                <p>Comentario de {comment.user_id} en articulo&nbsp;</p><p style={{ color: 'rgb(52, 52, 204)', textDecoration: 'underline', cursor: 'pointer' }} onClick={() => hanlderNavigateArticle(comment.articulo_id)}>{comment.articulo_id}</p><p>, {comment.fecha}</p>
-                                                                            </div>
-                                                                            <div className="d-flex mb-4">
-                                                                                <p>{comment.comentario}</p>
-                                                                            </div>
-                                                                            <div className='d-flex justify-content-end'>
-                                                                                <button onClick={() => keepComment(comment)} type='button' className='btn btn-success' style={{ marginRight: '5px' }}>Conservar comentario</button>
-                                                                                <button onClick={() => deleteComment(comment)} type='button' className='btn btn-danger'>Eliminar comentario</button>
-                                                                            </div>
-                                                                        </div>
-                                                                    ))}
+                                                                <div className='d-flex flex-column w-100 card card-body' key={report.id}>
+                                                                    <div style={{ borderBottom: '1px solid rgb(138, 138, 138)', display: 'flex' }}>
+                                                                        <p>Comentario de {report.user_escritor_usuario} - id: {report.user_id_escritor} en articulo&nbsp;</p><p style={{ color: 'rgb(52, 52, 204)', textDecoration: 'underline', cursor: 'pointer' }} onClick={() => hanlderNavigateArticle(report.articulo_id)}>{report.articulo_id}</p><p>, {report.fecha}</p>
+                                                                    </div>
+                                                                    <div className="d-flex mb-4">
+                                                                        <p>{report.comentario}</p>
+                                                                    </div>
+                                                                    <div className='d-flex justify-content-end'>
+                                                                        <button onClick={() => keepComment(report)} type='button' className='btn btn-success' style={{ marginRight: '5px' }}>Conservar comentario</button>
+                                                                        <button onClick={() => deleteComment(report)} type='button' className='btn btn-danger'>Eliminar comentario</button>
+                                                                    </div>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </td>
