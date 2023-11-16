@@ -102,6 +102,7 @@ const Layout = () => {
                                     <Route element={<Article mode='edit' />} path="/articles/edit/:id" />
                                     <Route element={<Article />} path="/articles/add" />
                                     <Route element={<InitializeAsSeller />} path='/sellers' />
+                                    <Route element ={<EditArticleVideos />} path="/videos/update/:id" />
                                 </Route>
                                 <Route element={<ForgotPassword />} path="/forgot-password" />
                                 <Route element={<About />} path="/about" />
@@ -114,7 +115,6 @@ const Layout = () => {
                                 <Route element={<SellArticle />} path="/sell/:id" />
                                 <Route element={<Offers />} path="/offers/:id" />
                                 <Route element={<Cart />} path="/cart" />
-                                <Route element ={<EditArticleVideos />} path="/videos/update/:id" />
                                 <Route element={<h1>Not found!</h1>} />
                             </Routes>
                         </div>
