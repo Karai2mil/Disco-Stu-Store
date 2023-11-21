@@ -1,4 +1,4 @@
-#!/Users/karai/Desktop/Programacion/DiscoStu-Version_propia/src/api/myenv/bin/python3.11
+#!/Users/karai/Desktop/Programacion/Disco-Stu-Store/src/api/myenv/bin/python3.11
 # -*- coding: utf-8 -*-
 import re
 import sys

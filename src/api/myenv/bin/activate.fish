@@ -33,7 +33,7 @@ end
 # Unset irrelevant variables.
 deactivate nondestructive
 
-set -gx VIRTUAL_ENV "/Users/karai/Desktop/Programacion/DiscoStu-Version_propia/src/api/myenv"
+set -gx VIRTUAL_ENV "/Users/karai/Desktop/Programacion/Disco-Stu-Store/src/api/myenv"
 
 set -gx _OLD_VIRTUAL_PATH $PATH
 set -gx PATH "$VIRTUAL_ENV/bin" $PATH

@@ -13,6 +13,21 @@ Antes de comenzar, asegúrate de tener instalados los siguientes componentes:
 
     git clone https://github.com/Karai2mil/Disco-Stu-Store
 
+**2. Configuramos Front-End** 
+
+**2.1-** Parate en el directorio raiz para instalar dependencias:
+
+    npm install  # Instalar dependencias (sólo la primera vez)
+
+**2.2- Configuracion de variables de entorno** 
+
+
+1) Copia el archivo `.env.example` y renómbralo a `.env`.
+2) Completa las variables en el archivo `.env` con tus propias configuraciones.
+3) Guarda y usa las variables según sea necesario en el proyecto.
+
+** Por defecto esta configurada la variable BACKEND_URL utilizada para conectar el Front-End con el Back-End.
+
 **3. Activamos Back-End** 
 
 **3.1-** Desde el directorio raiz, ingresa al directorio del backend y si no tienes un entorno virtual creado, crea uno:
@@ -36,21 +51,6 @@ Antes de comenzar, asegúrate de tener instalados los siguientes componentes:
 **4. Accede a la aplicacion-** Una vez que ambos servidores estén activos, puedes acceder a la aplicación en tu navegador ingresando la siguiente URL:
 
     http://localhost:3000
-
-**2. Configuramos Front-End** 
-
-**2.1-** Parate en el directorio raiz para instalar dependencias:
-
-    npm install  # Instalar dependencias (sólo la primera vez)
-
-**2.2- Configuracion de variables de entorno** 
-
-
-1) Copia el archivo `.env.example` y renómbralo a `.env`.
-2) Completa las variables en el archivo `.env` con tus propias configuraciones.
-3) Guarda y usa las variables según sea necesario en el proyecto.
-
-** Por defecto esta configurada la variable BACKEND_URL utilizada para conectar el Front-End con el Back-End.
 
 
 ## Contacto
